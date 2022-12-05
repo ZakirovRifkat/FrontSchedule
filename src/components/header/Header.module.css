@@ -1,4 +1,4 @@
-.header{
+.header {
     background-color: rgb(216, 80, 17);
     height: 40px;
     width: 100%;
@@ -9,14 +9,14 @@
     z-index: 1;
 }
 
-.logo{
+.logo {
     color: aliceblue;
     font-size: 26px;
     font-family: Google Sans, Arial, sans-serif;
     margin-right: 40px;
 }
 
-.header_icons{
+.headerIcons {
     box-sizing: border-box;
     min-width: 280px;
     margin-left: 40px;
@@ -24,46 +24,46 @@
     align-items: center;
 }
 
-.icon{
+.icon {
     width: 26px;
     height: 26px;
-    margin:0 5px;
+    margin: 0 5px;
 }
 
-.search{
+.search {
     display: flex;
     align-items: center;
-    padding:3px 4px; 
+    padding: 3px 4px;
     background-color: rgba(255, 255, 255, 0.233);
     border-radius: 8px;
     width: 200px;
 }
 
-.search_input{
+.searchInput {
     margin-left: 5px;
     border-width: 0;
     background-color: rgba(240, 248, 255, 0);
     outline: none;
 }
 
-.search_input::placeholder{
-    color:white;
-    font-family: 'Google Sans', 'Trebuchet MS', sans-serif;
+.searchInput::placeholder {
+    color: white;
+    font-family: "Google Sans", "Trebuchet MS", sans-serif;
 }
 
-.search_input:focus{
-   color:white;
-   font-family: 'Google Sans', 'Trebuchet MS', sans-serif;
-   width: 165px
-} 
+.searchInput:focus {
+    color: white;
+    font-family: "Google Sans", "Trebuchet MS", sans-serif;
+    width: 165px;
+}
 @media (max-width: 700px) {
     .logo {
-      display: none;
+        display: none;
     }
-  }
-  
-  @media (max-width: 1000px) {
+}
+
+@media (max-width: 1000px) {
     .header_icons {
-      margin-left: 13px;
+        margin-left: 13px;
     }
-  }
+}

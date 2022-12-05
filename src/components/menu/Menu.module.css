@@ -1,4 +1,4 @@
-.main_menu{
+.mainMenu {
     width: 320px;
     background-color: rgba(245, 222, 179, 0.158);
     padding-top: 70px;
@@ -6,77 +6,77 @@
     flex-direction: column;
 }
 
-.text{
-    color:rgba(92, 94, 95, 0.438);
+.text {
+    color: rgba(92, 94, 95, 0.438);
 }
-.button{
+.button {
     padding: 8px 10px;
     margin: 5px 36px;
     border-radius: 10px;
 }
-.button_text{
-    display:flex;
-     justify-content: space-between;
+.buttonText {
+    display: flex;
+    justify-content: space-between;
 }
-.button:hover{
-background-color: rgba(3, 3, 3, 0.068);
-transition: 0.2s;
+.button:hover {
+    background-color: rgba(3, 3, 3, 0.068);
+    transition: 0.2s;
 }
 
-.button a{
+.button a {
     text-decoration: none;
     color: rgb(82, 85, 85);
-    font-family: 'Google Sans', 'Trebuchet MS', sans-serif;
+    font-family: "Google Sans", "Trebuchet MS", sans-serif;
     width: 100%;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.button a:visited{
+.button a:visited {
     color: rgb(82, 85, 85);
 }
 
-.button a:active{
-        color: rgb(82, 85, 85);
+.button a:active {
+    color: rgb(82, 85, 85);
 }
 
-.main_content{
-    background-color:white;
+.main_content {
+    background-color: white;
     width: 100%;
 }
-.line{
-    align-self:center ;
-    color:rgba(92, 94, 95, 0.438);
+.line {
+    align-self: center;
+    color: rgba(92, 94, 95, 0.438);
     border-bottom: 1px rgba(92, 94, 95, 0.438) solid;
     width: 178px;
-    margin:15px 0;
+    margin: 15px 0;
 }
-.project_button{
-   color:rgba(92, 94, 95, 0.438);
-   outline: none;
-   border: none;
-   background-color: rgba(240, 248, 255, 0);
-   padding: 0;
-   cursor:pointer;
+.projectButton {
+    color: rgba(92, 94, 95, 0.438);
+    outline: none;
+    border: none;
+    background-color: rgba(240, 248, 255, 0);
+    padding: 0;
+    cursor: pointer;
 }
 
-.project{
+.project {
     text-decoration: none;
     color: rgb(82, 85, 85);
-    font-family: 'Google Sans', 'Trebuchet MS', sans-serif;
+    font-family: "Google Sans", "Trebuchet MS", sans-serif;
     width: 100%;
-    cursor:default;
+    cursor: default;
 }
 @media (max-width: 700px) {
     .right {
-      display: none;
+        display: none;
     }
-  }
-  
-  @media (max-width: 1000px) {
-    .main_menu {
-      display: none;
+}
+
+@media (max-width: 1000px) {
+    .mainMenu {
+        display: none;
     }
     .left {
-      margin-left: 13px;
+        margin-left: 13px;
     }
-  }
+}
