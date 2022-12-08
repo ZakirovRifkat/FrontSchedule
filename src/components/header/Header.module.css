@@ -1,5 +1,5 @@
 .header {
-    background-color: rgb(216, 80, 17);
+    background-color: rgba(30, 111, 133, 0.721);
     height: 40px;
     width: 100%;
     display: flex;
@@ -14,6 +14,26 @@
     font-size: 26px;
     font-family: Google Sans, Arial, sans-serif;
     margin-right: 40px;
+    cursor: default;
+}
+.button {
+    outline: none;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: rgba(253, 253, 253, 0.226);
+    border-radius: 3px;
+    transition: 0.4s;
+}
+.home {
+    padding: 1.5px;
+    margin-right: 3px;
+    cursor: pointer;
+}
+.home:hover {
+    background-color: rgba(253, 253, 253, 0.226);
+    border-radius: 3px;
+    transition: 0.4s;
 }
 
 .headerIcons {
@@ -28,6 +48,8 @@
     width: 26px;
     height: 26px;
     margin: 0 5px;
+    display: flex;
+    align-items: flex-end;
 }
 
 .search {
@@ -63,7 +85,7 @@
 }
 
 @media (max-width: 1000px) {
-    .header_icons {
+    .headerIcons {
         margin-left: 13px;
     }
 }

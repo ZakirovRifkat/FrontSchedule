@@ -2,10 +2,12 @@ import Content from "../content/Content"
 import Menu from "../menu/Menu"
 import style from "./Main.module.css"
 
-const Main = () => (
-    <div className={style.mainContainer}>
-        <Menu />
-        <Content />
-    </div>
-)
+const Main = (props) => {
+    return (
+        <div className={style.mainContainer}>
+            <Menu menuMode={props.menuMode} />
+            <Content />
+        </div>
+    )
+}
 export default Main

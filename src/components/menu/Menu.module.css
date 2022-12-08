@@ -1,9 +1,25 @@
 .mainMenu {
-    width: 320px;
+    min-width: 320px;
     background-color: rgba(245, 222, 179, 0.158);
     padding-top: 70px;
     display: flex;
     flex-direction: column;
+    transition: all 0.4s ease 0s;
+    overflow: hidden;
+    position: relative;
+    left: 0;
+}
+.mainMenuOff {
+   min-width: 0px;
+    background-color: rgba(245, 222, 179, 0.158);
+    padding-top: 70px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s ease 0s;
+    overflow: hidden;
+    position: relative;
+    left: -320px;
+
 }
 
 .text {
@@ -39,7 +55,7 @@
     color: rgb(82, 85, 85);
 }
 
-.main_content {
+.mainContent {
     background-color: white;
     width: 100%;
 }
@@ -55,8 +71,39 @@
     outline: none;
     border: none;
     background-color: rgba(240, 248, 255, 0);
-    padding: 0;
     cursor: pointer;
+    padding: 0 5px;
+    box-sizing: border-box;
+    transform: rotate(0deg);
+    transition: transform 0.4s ease 0s;
+}
+.addProjectButton {
+    color: rgba(92, 94, 95, 0.438);
+    outline: none;
+    border: none;
+    background-color: rgba(240, 248, 255, 0);
+    cursor: pointer;
+    font-size: 20px;
+    margin-right: 5px;
+    padding: 0 5px;
+}
+.addProjectButton:hover {
+    background-color: rgba(3, 3, 3, 0.123);
+    transition: 0.2s;
+    border-radius: 4px;
+}
+.projectButton:hover {
+    background-color: rgba(3, 3, 3, 0.123);
+    transition: 0.2s;
+    border-radius: 4px;
+}
+.triangleOn {
+    transform: rotate(-90deg);
+    transition: all 0.4s ease 0s;
+}
+.triangleOff {
+    transform: rotate(0deg);
+    transition: all 0.4s ease 0s;
 }
 
 .project {
@@ -66,6 +113,36 @@
     width: 100%;
     cursor: default;
 }
+
+.projectList {
+    padding: 2px 10px;
+    margin: 0 36px;
+    border-radius: 10px;
+    color: rgba(0, 0, 0, 0.788);
+    display: flex;
+}
+.projectList:hover {
+    background-color: rgba(3, 3, 3, 0.068);
+    transition: 0.2s;
+}
+.circle {
+    height: 8px;
+    width: 8px;
+    border-radius: 5px;
+    background-color: rgb(104, 99, 99);
+    align-self: center;
+    margin-right: 8px;
+}
+.projectContainer {
+    height: 500px;
+    overflow-y: hidden;
+    transition: height 1s ease 0s;
+}
+.projectContainerOff {
+    height: 0px;
+    overflow-y: hidden;
+    transition: height 0.4s ease 0s;
+}
 @media (max-width: 700px) {
     .right {
         display: none;
@@ -73,9 +150,6 @@
 }
 
 @media (max-width: 1000px) {
-    .mainMenu {
-        display: none;
-    }
     .left {
         margin-left: 13px;
     }
