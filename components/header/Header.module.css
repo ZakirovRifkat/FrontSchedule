@@ -1,0 +1,91 @@
+.header {
+    background-color: rgba(30, 111, 133, 0.721);
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+}
+
+.logo {
+    color: aliceblue;
+    font-size: 26px;
+    font-family: Google Sans, Arial, sans-serif;
+    margin-right: 40px;
+    cursor: default;
+}
+.button {
+    outline: none;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: rgba(253, 253, 253, 0.226);
+    border-radius: 3px;
+    transition: 0.4s;
+}
+.home {
+    padding: 1.5px;
+    margin-right: 3px;
+    cursor: pointer;
+}
+.home:hover {
+    background-color: rgba(253, 253, 253, 0.226);
+    border-radius: 3px;
+    transition: 0.4s;
+}
+
+.headerIcons {
+    box-sizing: border-box;
+    min-width: 280px;
+    margin-left: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    width: 26px;
+    height: 26px;
+    margin: 0 5px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    padding: 3px 4px;
+    background-color: rgba(255, 255, 255, 0.233);
+    border-radius: 8px;
+    width: 200px;
+}
+
+.searchInput {
+    margin-left: 5px;
+    border-width: 0;
+    background-color: rgba(240, 248, 255, 0);
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: white;
+    font-family: "Google Sans", "Trebuchet MS", sans-serif;
+}
+
+.searchInput:focus {
+    color: white;
+    font-family: "Google Sans", "Trebuchet MS", sans-serif;
+    width: 165px;
+}
+@media (max-width: 700px) {
+    .logo {
+        display: none;
+    }
+}
+
+@media (max-width: 1000px) {
+    .headerIcons {
+        margin-left: 13px;
+    }
+}
