@@ -1,13 +1,17 @@
-import { FC, ReactNode, useState } from "react"
+import { useState } from "react"
 import style from "./Menu.module.css"
+import clsx from "clsx"
 
-const Menu = (props) => {
-    let [listMode, setListMode] = useState(false);
-    const editListMode= ()=>{
-        setListMode(!listMode)
+const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
+    const [isProjectsExpanded, setIsProjectsExpanded] = useState(false)
+    const toggleProjects = () => {
+        setIsProjectsExpanded(!isProjectsExpanded)
     }
+
     return (
-        <div className={props.menuMode ? style.mainMenu : style.mainMenuOff}>
+        <div
+            className={clsx(style.menu, isMenuOpen ? style.open : style.closed)}
+        >
             <div className={style.button}>
                 <a href="">
                     <div className={style.buttonText}>
@@ -38,11 +42,30 @@ const Menu = (props) => {
                 <div className={style.buttonText}>
                     <div className={style.project}>Проекты</div>
                     <button className={style.addProjectButton}>+</button>
-                    <button onClick={editListMode} className={style.projectButton}><div className={listMode? style.triangleOn: style.triangleOff}>◀</div></button>
+                    <button
+                        onClick={toggleProjects}
+                        className={style.projectButton}
+                    >
+                        <div
+                            className={
+                                isProjectsExpanded
+                                    ? style.triangleOn
+                                    : style.triangleOff
+                            }
+                        >
+                            ◀
+                        </div>
+                    </button>
                 </div>
             </div>
 
-            <div className={listMode? style.projectContainer : style.projectContainerOff}>
+            <div
+                className={
+                    isProjectsExpanded
+                        ? style.projectContainer
+                        : style.projectContainerOff
+                }
+            >
                 <div className={style.projectList}>
                     <div className={style.circle}></div>
                     <a>Проект 1</a>

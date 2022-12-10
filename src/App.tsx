@@ -4,14 +4,15 @@ import Main from "./components/main/Main"
 import { useState } from "react"
 
 function App() {
-    let [menuMode, setMenuMode] = useState(false)
-    const editBurger = () => {
-        setMenuMode(!menuMode)
+    let [isMenuOpen, setIsMenuOpen] = useState(false)
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen)
     }
+
     return (
         <div className="body">
-            <Header setMenuMode={editBurger} />
-            <Main menuMode={menuMode} />
+            <Header toggleMenu={toggleMenu} />
+            <Main isMenuOpen={isMenuOpen} />
         </div>
     )
 }

@@ -3,12 +3,12 @@ import image1 from "../../assets/menu.png"
 import image2 from "../../assets/home.png"
 import image3 from "../../assets/search.png"
 
-const Header = (props) => {
+const Header = ({ toggleMenu }: { toggleMenu: () => void }) => {
     return (
         <div className={style.header}>
             <div className={style.headerIcons}>
                 <div>
-                    <div onClick={props.setMenuMode} className={style.button}>
+                    <div onClick={toggleMenu} className={style.button}>
                         <img src={image1} className={style.icon}></img>
                     </div>
                 </div>

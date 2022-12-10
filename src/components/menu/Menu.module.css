@@ -1,25 +1,18 @@
-.mainMenu {
-    min-width: 320px;
+.menu {
+    width: 320px;
     background-color: rgba(245, 222, 179, 0.158);
     padding-top: 70px;
     display: flex;
     flex-direction: column;
     transition: all 0.4s ease 0s;
     overflow: hidden;
-    position: relative;
-    left: 0;
 }
-.mainMenuOff {
-   min-width: 0px;
-    background-color: rgba(245, 222, 179, 0.158);
-    padding-top: 70px;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.4s ease 0s;
-    overflow: hidden;
-    position: relative;
-    left: -320px;
 
+.open {
+    margin-left: 0;
+}
+.closed {
+    margin-left: -320px;
 }
 
 .text {
