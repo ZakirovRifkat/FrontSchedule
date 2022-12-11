@@ -1,6 +1,7 @@
-import { useState } from "react"
-import style from "./Menu.module.css"
-import clsx from "clsx"
+import { ReactNode, useState } from 'react'
+import styles from './Menu.module.css'
+import clsx from 'clsx'
+import { Filter, useContentType } from 'components/content/use-content-type'
 
 const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
     const [isProjectsExpanded, setIsProjectsExpanded] = useState(false)
@@ -8,49 +9,55 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
         setIsProjectsExpanded(!isProjectsExpanded)
     }
 
+    const [contentType, setContentType] = useContentType()
+
     return (
         <div
-            className={clsx(style.menu, isMenuOpen ? style.open : style.closed)}
+            className={clsx(
+                styles.menu,
+                isMenuOpen ? styles.open : styles.closed
+            )}
         >
-            <div className={style.button}>
-                <a href="">
-                    <div className={style.buttonText}>
-                        <div>Сегодня</div>
-                        <div className={style.text}>8</div>
-                    </div>
-                </a>
-            </div>
-            <div className={style.button}>
-                <a href="">
-                    <div className={style.buttonText}>
-                        <div>Предстоящие</div>
-                        <div className={style.text}>5</div>
-                    </div>
-                </a>
-            </div>
-            <div className={style.button}>
-                <a href="">
-                    <div className={style.buttonText}>
-                        <div>Просроченнные</div>
-                        <div className={style.text}>10</div>
-                    </div>
-                </a>
-            </div>
-            <span className={style.line}></span>
+            <MenuItem
+                href="#"
+                amount={8}
+                isActive={contentType === Filter.today}
+                onClick={() => setContentType(Filter.today)}
+            >
+                Сегодня
+            </MenuItem>
+            <MenuItem
+                href="#"
+                amount={8}
+                isActive={contentType === Filter.oncoming}
+                onClick={() => setContentType(Filter.oncoming)}
+            >
+                Предстоящие
+            </MenuItem>
+            <MenuItem
+                href="#"
+                amount={8}
+                isActive={contentType === Filter.overdue}
+                onClick={() => setContentType(Filter.overdue)}
+            >
+                Просроченные
+            </MenuItem>
 
-            <div className={style.button}>
-                <div className={style.buttonText}>
-                    <div className={style.project}>Проекты</div>
-                    <button className={style.addProjectButton}>+</button>
+            <span className={styles.line}></span>
+
+            <div className={styles.button}>
+                <div className={styles.buttonText}>
+                    <div className={styles.project}>Проекты</div>
+                    <button className={styles.addProjectButton}>+</button>
                     <button
                         onClick={toggleProjects}
-                        className={style.projectButton}
+                        className={styles.projectButton}
                     >
                         <div
                             className={
                                 isProjectsExpanded
-                                    ? style.triangleOn
-                                    : style.triangleOff
+                                    ? styles.triangleOn
+                                    : styles.triangleOff
                             }
                         >
                             ◀
@@ -62,20 +69,20 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
             <div
                 className={
                     isProjectsExpanded
-                        ? style.projectContainer
-                        : style.projectContainerOff
+                        ? styles.projectContainer
+                        : styles.projectContainerOff
                 }
             >
-                <div className={style.projectList}>
-                    <div className={style.circle}></div>
+                <div className={styles.projectList}>
+                    <div className={styles.circle}></div>
                     <a>Проект 1</a>
                 </div>
-                <div className={style.projectList}>
-                    <div className={style.circle}></div>
+                <div className={styles.projectList}>
+                    <div className={styles.circle}></div>
                     <a>Проект 2</a>
                 </div>
-                <div className={style.projectList}>
-                    <div className={style.circle}></div>
+                <div className={styles.projectList}>
+                    <div className={styles.circle}></div>
                     <a>Проект 3</a>
                 </div>
             </div>
@@ -84,17 +91,28 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
 }
 export default Menu
 
-// const MenuLink: FC<{
-//     href: string
-//     amount: number
-//     children?: ReactNode
-// }> = ({ amount, href, children }) => (
-//     <div className={style.button}>
-//         <a href={href}>
-//             <div className={style.buttonText}>
-//                 <div>{children}</div>
-//                 <div className={style.text}>{amount}</div>
-//             </div>
-//         </a>
-//     </div>
-// )
+const MenuItem = ({
+    amount,
+    href,
+    children,
+    isActive,
+    onClick,
+}: {
+    href: string
+    amount: number
+    isActive: boolean
+    children?: ReactNode
+    onClick?: () => void
+}) => (
+    <div
+        className={clsx(styles.button, { [styles.active]: isActive })}
+        onClick={onClick}
+    >
+        <a href={href}>
+            <div className={styles.buttonText}>
+                <div>{children}</div>
+                <div className={styles.text}>{amount}</div>
+            </div>
+        </a>
+    </div>
+)

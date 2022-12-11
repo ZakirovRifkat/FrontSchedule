@@ -1,31 +1,39 @@
-import { mask, Struct } from "superstruct"
-import { keysOf } from "./object"
+import { useQuery as useQueryLib } from 'react-query'
+import { mask, Struct } from 'superstruct'
+import { keysOf } from './util'
 
-export const callApi = async <T extends unknown>(
-    path: string,
-    {
-        method,
-        query,
-        body,
-        parser,
-    }: {
-        method: "GET" | "POST" | "PUT" | "DELETE"
-        query?: Record<string, string | number | undefined>
-        body?: unknown
-        parser?: Struct<T>
-    }
-): Promise<T> => {
+type Options<T extends unknown> = {
+    path: string
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
+    query?: Record<string, string | number | undefined>
+    body?: unknown
+    parser?: Struct<T>
+}
+
+export const useQuery = <T extends unknown>(
+    name: string,
+    options: Options<T>
+) => useQueryLib(name, () => callApi(options))
+
+export const callApi = async <T extends unknown>({
+    path,
+    method,
+    query,
+    body,
+    parser,
+}: Options<T>): Promise<T> => {
     const url = [
         process.env.REACT_APP_API_HOST,
         path,
-        query ? toQueryString(query) : undefined,
+        query ? '?' + toQueryString(query) : undefined,
     ]
         .filter(Boolean)
-        .join("")
+        .join('')
     const response = await fetch(url, {
         method,
-        headers: body ? { "Content-Type": "application/json" } : undefined,
+        headers: body ? { 'Content-Type': 'application/json' } : undefined,
         body: body ? JSON.stringify(body) : undefined,
+        credentials: 'include',
     })
 
     if (!response.ok) {
@@ -57,6 +65,6 @@ const toQueryString = (
 export class ApiError extends Error {}
 export class HttpError extends Error {
     constructor(public statusCode: number) {
-        super("HTTP Error")
+        super('HTTP Error')
     }
 }

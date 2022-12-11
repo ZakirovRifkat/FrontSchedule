@@ -1,16 +1,8 @@
-.mainContent {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-    width: 100%;
-}
-
 .form {
     width: calc(100vw - 360px);
 }
 .title {
     color: rgb(48, 48, 48);
-    font-family: Roboto, sans-serif;
     font-weight: 800;
     font-size: 46px;
     margin: 20px 0 15px 30px;
@@ -20,7 +12,6 @@
     justify-content: space-between;
     margin: 20px 70px 0 70px;
     color: rgb(48, 48, 48);
-    font-family: Roboto, sans-serif;
     font-size: 26px;
 }
 .check {
@@ -29,11 +20,10 @@
     width: 16px;
     background-color: #fff;
     border: 1px solid #333;
-    border-radius: 3pxrgb (138, 31, 31);
+    border-radius: 3px;
 }
 .subtask {
     margin: 5px 200px 0 110px;
-    font-family: Roboto, sans-serif;
     color: rgb(48, 48, 48);
     font-size: 16px;
 }
@@ -42,7 +32,6 @@
 }
 .date {
     margin: 10px 200px 0 110px;
-    font-family: Roboto, sans-serif;
     color: rgb(48, 48, 48);
     font-size: 15px;
 }

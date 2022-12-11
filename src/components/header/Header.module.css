@@ -1,20 +1,21 @@
 .header {
     background-color: rgba(30, 111, 133, 0.721);
-    height: 40px;
+    height: 56px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: fixed;
+    top: 0;
     z-index: 1;
 }
 
 .logo {
     color: aliceblue;
-    font-size: 26px;
-    font-family: Google Sans, Arial, sans-serif;
+    font-size: 16px;
     margin-right: 40px;
     cursor: default;
+    text-transform: uppercase;
 }
 .button {
     outline: none;
@@ -70,12 +71,10 @@
 
 .searchInput::placeholder {
     color: white;
-    font-family: "Google Sans", "Trebuchet MS", sans-serif;
 }
 
 .searchInput:focus {
     color: white;
-    font-family: "Google Sans", "Trebuchet MS", sans-serif;
     width: 165px;
 }
 @media (max-width: 700px) {

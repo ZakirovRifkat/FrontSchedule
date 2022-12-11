@@ -1,19 +1,34 @@
-import "./App.css"
-import Header from "./components/header/Header"
-import Main from "./components/main/Main"
-import { useState } from "react"
+import './App.css'
+import Header from './components/header/Header'
+import Main from './components/main/Main'
+import { useState } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 function App() {
-    let [isMenuOpen, setIsMenuOpen] = useState(false)
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen)
-    }
+    const [queryClient] = useState(() => {
+        return new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                    refetchOnWindowFocus: false,
+                },
+            },
+        })
+    })
+
+    const [isMenuOpen, setIsMenuOpen] = useState(true)
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
     return (
-        <div className="body">
-            <Header toggleMenu={toggleMenu} />
-            <Main isMenuOpen={isMenuOpen} />
-        </div>
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <div className="body">
+                    <Header toggleMenu={toggleMenu} />
+                    <Main isMenuOpen={isMenuOpen} />
+                </div>
+            </BrowserRouter>
+        </QueryClientProvider>
     )
 }
 

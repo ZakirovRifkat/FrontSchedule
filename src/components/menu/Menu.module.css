@@ -1,10 +1,10 @@
 .menu {
     width: 320px;
     background-color: rgba(245, 222, 179, 0.158);
-    padding-top: 70px;
+    padding-top: 32px;
     display: flex;
     flex-direction: column;
-    transition: all 0.4s ease 0s;
+    transition: margin 0.4s ease 0s;
     overflow: hidden;
 }
 
@@ -27,7 +27,8 @@
     display: flex;
     justify-content: space-between;
 }
-.button:hover {
+.button:hover,
+.button.active {
     background-color: rgba(3, 3, 3, 0.068);
     transition: 0.2s;
 }
@@ -35,7 +36,6 @@
 .button a {
     text-decoration: none;
     color: rgb(82, 85, 85);
-    font-family: "Google Sans", "Trebuchet MS", sans-serif;
     width: 100%;
     cursor: pointer;
 }
@@ -102,7 +102,6 @@
 .project {
     text-decoration: none;
     color: rgb(82, 85, 85);
-    font-family: "Google Sans", "Trebuchet MS", sans-serif;
     width: 100%;
     cursor: default;
 }

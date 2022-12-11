@@ -3,3 +3,9 @@
     justify-content: center;
     height: 100vh;
 }
+
+.mainContent {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

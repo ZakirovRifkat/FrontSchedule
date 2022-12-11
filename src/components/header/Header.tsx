@@ -1,7 +1,7 @@
-import style from "./Header.module.css"
-import image1 from "../../assets/menu.png"
-import image2 from "../../assets/home.png"
-import image3 from "../../assets/search.png"
+import style from './Header.module.css'
+import image1 from '../../assets/menu.png'
+import image2 from '../../assets/home.png'
+import image3 from '../../assets/search.png'
 
 const Header = ({ toggleMenu }: { toggleMenu: () => void }) => {
     return (
