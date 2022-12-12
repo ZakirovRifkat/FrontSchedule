@@ -41,11 +41,29 @@ const Main = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
             <Menu isMenuOpen={isMenuOpen} projects={data} />
             <div className={styles.mainContent}>
                 {!data.length ? (
-                    <Alert
-                        text="У вас нет ни одного проекта"
-                        buttonText="Создать"
-                        onButtonClick={() => navigate('/project/create')}
-                    />
+                    <Routes>
+                        <Route
+                            path="/project/create"
+                            element={
+                                <ProjectPage
+                                    projects={data}
+                                    onSaved={refetch}
+                                />
+                            }
+                        />
+                        <Route
+                            path="*"
+                            element={
+                                <Alert
+                                    text="У вас нет ни одного проекта"
+                                    buttonText="Создать"
+                                    onButtonClick={() =>
+                                        navigate('/project/create')
+                                    }
+                                />
+                            }
+                        />
+                    </Routes>
                 ) : (
                     <Routes>
                         <Route

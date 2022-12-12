@@ -20,8 +20,6 @@ const Menu = ({
     const [contentType, setContentType] = useContentType()
     const navigate = useNavigate()
 
-    console.log(contentType)
-
     return (
         <div
             className={clsx(

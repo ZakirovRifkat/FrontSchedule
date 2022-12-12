@@ -63,7 +63,7 @@ const TaskPage = ({
                 path: task ? '/tasks/update' : '/tasks/add',
                 method: task ? 'PUT' : 'POST',
                 query: {
-                    id: task?.id,
+                    id: task ? task.id : project?.id,
                     name,
                     description,
                     start: formatDate(fromHumanDate(startTime)),
