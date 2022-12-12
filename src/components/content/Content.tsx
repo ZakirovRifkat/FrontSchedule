@@ -36,7 +36,7 @@ const Content = ({ projects }: { projects: Project[] }) => {
     )
 
     useEffect(() => {
-        refetch()
+        refetch({ cancelRefetch: true })
     }, [contentType, refetch])
 
     if (isFetching) {
@@ -90,12 +90,7 @@ const Content = ({ projects }: { projects: Project[] }) => {
                         ) : (
                             <>
                                 {data.map((task) => (
-                                    <TaskItem
-                                        key={task.id}
-                                        task={task}
-                                        project={project}
-                                        onDeleted={refetch}
-                                    />
+                                    <TaskItem key={task.id} task={task} />
                                 ))}
                                 {project ? (
                                     <button
@@ -141,11 +136,9 @@ const Content = ({ projects }: { projects: Project[] }) => {
 export default Content
 
 const TaskItem = ({
-    project,
     task,
     onDeleted,
 }: {
-    project: Project | undefined
     task: Task
     onDeleted?: () => void
 }) => {
