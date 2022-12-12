@@ -153,6 +153,12 @@ const TaskItem = ({
     const navigate = useNavigate()
 
     const handleDelete = async () => {
+        // eslint-disable-next-line no-restricted-globals
+        const sure = confirm('Вы уверены, что хотите удалить задачу?')
+        if (!sure) {
+            return
+        }
+
         try {
             await callApi({
                 path: '/tasks/delete',
