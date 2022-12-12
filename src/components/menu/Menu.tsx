@@ -2,14 +2,25 @@ import { ReactNode, useState } from 'react'
 import styles from './Menu.module.css'
 import clsx from 'clsx'
 import { Filter, useContentType } from 'components/content/use-content-type'
+import { Project } from 'api/project'
+import { useNavigate } from 'react-router'
 
-const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
+const Menu = ({
+    isMenuOpen,
+    projects,
+}: {
+    isMenuOpen: boolean
+    projects: Project[]
+}) => {
     const [isProjectsExpanded, setIsProjectsExpanded] = useState(false)
     const toggleProjects = () => {
         setIsProjectsExpanded(!isProjectsExpanded)
     }
 
     const [contentType, setContentType] = useContentType()
+    const navigate = useNavigate()
+
+    console.log(contentType)
 
     return (
         <div
@@ -20,7 +31,6 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
         >
             <MenuItem
                 href="#"
-                amount={8}
                 isActive={contentType === Filter.today}
                 onClick={() => setContentType(Filter.today)}
             >
@@ -28,7 +38,6 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
             </MenuItem>
             <MenuItem
                 href="#"
-                amount={8}
                 isActive={contentType === Filter.oncoming}
                 onClick={() => setContentType(Filter.oncoming)}
             >
@@ -36,7 +45,6 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
             </MenuItem>
             <MenuItem
                 href="#"
-                amount={8}
                 isActive={contentType === Filter.overdue}
                 onClick={() => setContentType(Filter.overdue)}
             >
@@ -48,7 +56,12 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
             <div className={styles.button}>
                 <div className={styles.buttonText}>
                     <div className={styles.project}>Проекты</div>
-                    <button className={styles.addProjectButton}>+</button>
+                    <button
+                        className={styles.addProjectButton}
+                        onClick={() => navigate('/project/create')}
+                    >
+                        +
+                    </button>
                     <button
                         onClick={toggleProjects}
                         className={styles.projectButton}
@@ -73,18 +86,20 @@ const Menu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
                         : styles.projectContainerOff
                 }
             >
-                <div className={styles.projectList}>
-                    <div className={styles.circle}></div>
-                    <a>Проект 1</a>
-                </div>
-                <div className={styles.projectList}>
-                    <div className={styles.circle}></div>
-                    <a>Проект 2</a>
-                </div>
-                <div className={styles.projectList}>
-                    <div className={styles.circle}></div>
-                    <a>Проект 3</a>
-                </div>
+                {!projects.length ? (
+                    <div>Нет проектов</div>
+                ) : (
+                    projects.map((project) => (
+                        <div
+                            key={project.id}
+                            className={styles.projectList}
+                            onClick={() => setContentType(project.id)}
+                        >
+                            <div className={styles.circle}></div>
+                            <a>{project.name}</a>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     )
@@ -99,7 +114,7 @@ const MenuItem = ({
     onClick,
 }: {
     href: string
-    amount: number
+    amount?: number
     isActive: boolean
     children?: ReactNode
     onClick?: () => void

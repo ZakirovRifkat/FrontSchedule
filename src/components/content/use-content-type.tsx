@@ -1,6 +1,6 @@
 import { includes, valuesOf } from 'lib/util'
 import { useCallback } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 export enum Filter {
     today = 'today',
@@ -10,31 +10,34 @@ export enum Filter {
 export type ContentType = Filter | number
 
 export const useContentType = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const location = useLocation()
+    const navigate = useNavigate()
 
-    const contentType = getContentType(searchParams)
+    const contentType = getContentType(location.pathname)
     const setContentType = useCallback(
         (nextContentType: ContentType) => {
-            const nextSearchParams = new URLSearchParams({
-                contentType: String(nextContentType),
-            })
-            setSearchParams(nextSearchParams)
+            navigate(`/project/${nextContentType}`)
         },
-        [setSearchParams]
+        [navigate]
     )
 
     return [contentType, setContentType] as const
 }
 
-const getContentType = (search: URLSearchParams): ContentType => {
-    const searchContentType = search.get('contentType')
-
-    if (includes(valuesOf(Filter), searchContentType)) {
-        return searchContentType
+const getContentType = (path: string): ContentType => {
+    const match = path.match(/^\/project\/([^/]+)/)
+    if (!match) {
+        return Filter.today
     }
 
-    if (searchContentType && isFinite(+searchContentType)) {
-        return +searchContentType
+    const [, projectId] = match
+
+    if (includes(valuesOf(Filter), projectId)) {
+        return projectId
+    }
+
+    if (projectId && isFinite(+projectId)) {
+        return +projectId
     }
 
     return Filter.today

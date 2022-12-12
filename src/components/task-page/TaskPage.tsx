@@ -1,27 +1,38 @@
 import { Project } from 'api/project'
+import { Task } from 'api/task'
 import { callApi } from 'lib/api'
+import { formatDate, fromHumanDate, toHumanDate } from 'lib/time'
 import { FormEvent, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import styles from './ProjectPage.module.css'
+import styles from './TaskPage.module.css'
 
-const ProjectPage = ({
-    projects,
+const TaskPage = ({
+    project,
     onSaved,
+    tasks,
 }: {
-    projects: Project[]
+    project: Project | undefined
+    tasks: Task[]
     onSaved?: () => void
 }) => {
-    const { projectId } = useParams()
-    const project = useMemo(
-        () => projects.find((p) => String(p.id) === projectId),
-        [projectId, projects]
+    const { taskId } = useParams()
+    const task = useMemo(
+        () => tasks.find((p) => String(p.id) === taskId),
+        [taskId, tasks]
     )
     const navigate = useNavigate()
 
     const [isSaving, setIsSaving] = useState(false)
     const [error, setError] = useState<null | string>(null)
 
-    const [name, setName] = useState(project?.name ?? '')
+    const [name, setName] = useState(task?.name ?? '')
+    const [description, setDescription] = useState(task?.description ?? '')
+    const [startTime, setStartTime] = useState(() =>
+        task ? toHumanDate(task.start) : ''
+    )
+    const [endTime, setEndTime] = useState(() =>
+        task ? toHumanDate(task.end) : ''
+    )
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -32,18 +43,40 @@ const ProjectPage = ({
         }
 
         try {
+            fromHumanDate(startTime)
+        } catch {
+            setError('Введите дату начала в формате DD.MM.YYYY')
+            return
+        }
+        try {
+            fromHumanDate(endTime)
+        } catch {
+            setError('Введите дату конца в формате DD.MM.YYYY')
+            return
+        }
+
+        try {
             setIsSaving(true)
             setError(null)
 
             await callApi({
-                path: project ? '/projects/update' : '/projects/add',
-                method: project ? 'PUT' : 'POST',
-                query: { name },
+                path: task ? '/tasks/update' : '/tasks/add',
+                method: task ? 'PUT' : 'POST',
+                query: {
+                    id: task?.id,
+                    name,
+                    description,
+                    start: formatDate(fromHumanDate(startTime)),
+                    end: formatDate(fromHumanDate(endTime)),
+                    status: task?.status ?? false,
+                    priority: task?.priority ?? 0,
+                },
             })
 
-            navigate('/', { replace: true })
+            navigate(-1)
             onSaved?.()
-        } catch {
+        } catch (e) {
+            console.log(e)
             alert('Не удалось сохранить проект')
         } finally {
             setIsSaving(false)
@@ -52,14 +85,35 @@ const ProjectPage = ({
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <input value={name} onChange={(e) => setName(e.target.value)} />
+            <h2>{task ? 'Изменить задачу' : 'Новая задача'}</h2>
+
+            <input
+                value={name}
+                placeholder="Название"
+                onChange={(e) => setName(e.target.value)}
+            />
+            <input
+                value={description}
+                placeholder="Описание"
+                onChange={(e) => setDescription(e.target.value)}
+            />
+            <input
+                value={startTime}
+                placeholder="Дата начала DD.MM.YYYY"
+                onChange={(e) => setStartTime(e.target.value)}
+            />
+            <input
+                value={endTime}
+                placeholder="Дата конца DD.MM.YYYY"
+                onChange={(e) => setEndTime(e.target.value)}
+            />
 
             {error ? <div>{error}</div> : null}
 
             <button type="submit" disabled={isSaving}>
-                {project ? 'Сохранить' : 'Создать'}
+                {task ? 'Сохранить' : 'Создать'}
             </button>
         </form>
     )
 }
-export default ProjectPage
+export default TaskPage

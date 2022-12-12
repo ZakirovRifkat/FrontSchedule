@@ -5,7 +5,7 @@ import { keysOf } from './util'
 type Options<T extends unknown> = {
     path: string
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
-    query?: Record<string, string | number | undefined>
+    query?: Record<string, string | number | boolean | undefined>
     body?: unknown
     parser?: Struct<T>
 }
@@ -51,7 +51,7 @@ export const callApi = async <T extends unknown>({
 }
 
 const toQueryString = (
-    query: Record<string, string | number | undefined>
+    query: Record<string, string | boolean | number | undefined>
 ): string => {
     const searchParams = new URLSearchParams()
     for (const key of keysOf(query)) {

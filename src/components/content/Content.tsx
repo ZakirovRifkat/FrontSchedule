@@ -1,7 +1,13 @@
+import { Project } from 'api/project'
 import { Task, TaskList } from 'api/task'
+import Alert from 'components/alert/Alert'
 import ErrorMessage from 'components/error-message/ErrorMessage'
 import Spinner from 'components/spinner/Spinner'
-import { useQuery } from 'lib/api'
+import TaskPage from 'components/task-page/TaskPage'
+import { callApi, useQuery } from 'lib/api'
+import { toHumanDate } from 'lib/time'
+import { useEffect } from 'react'
+import { Navigate, Route, Routes, useNavigate } from 'react-router'
 import style from './Content.module.css'
 import { Filter, useContentType } from './use-content-type'
 
@@ -11,9 +17,11 @@ const pathsForFilters: Record<Filter, string> = {
     [Filter.overdue]: '/tasks/notdone',
 }
 
-const Content = () => {
+const Content = ({ projects }: { projects: Project[] }) => {
     const [contentType] = useContentType()
-    const { isLoading, error, data, refetch } = useQuery(
+    const navigate = useNavigate()
+
+    const { isFetching, error, data, refetch } = useQuery(
         'tasks',
         typeof contentType === 'number'
             ? {
@@ -27,7 +35,11 @@ const Content = () => {
               }
     )
 
-    if (isLoading) {
+    useEffect(() => {
+        refetch()
+    }, [contentType, refetch])
+
+    if (isFetching) {
         return <Spinner />
     }
 
@@ -40,19 +52,120 @@ const Content = () => {
         )
     }
 
+    const project = projects.find((p) => p.id === contentType)
+    const projectName =
+        contentType === Filter.today
+            ? 'Сегодня'
+            : contentType === Filter.oncoming
+            ? 'Предстоящие'
+            : contentType === Filter.overdue
+            ? 'Просроченные'
+            : project?.name
+
+    if (!projectName) {
+        return <Navigate to="/" />
+    }
+
     return (
         <div className={style.form}>
-            <div className={style.title}>Проект 1</div>
+            <div className={style.title}>{projectName}</div>
 
-            {data.map((task) => (
-                <TaskItem task={task} />
-            ))}
+            <Routes>
+                <Route
+                    index
+                    element={
+                        !data.length ? (
+                            <Alert
+                                text="Ни одной задачи, как неожиданно и приятно"
+                                buttonText={project ? 'Создать' : undefined}
+                                onButtonClick={
+                                    project
+                                        ? () =>
+                                              navigate(
+                                                  `/project/${project.id}/task/create`
+                                              )
+                                        : undefined
+                                }
+                            />
+                        ) : (
+                            <>
+                                {data.map((task) => (
+                                    <TaskItem
+                                        key={task.id}
+                                        task={task}
+                                        project={project}
+                                        onDeleted={refetch}
+                                    />
+                                ))}
+                                {project ? (
+                                    <button
+                                        onClick={() =>
+                                            navigate(
+                                                `/project/${project.id}/task/create`
+                                            )
+                                        }
+                                    >
+                                        Создать задачу
+                                    </button>
+                                ) : null}
+                            </>
+                        )
+                    }
+                />
+                {!project ? null : (
+                    <Route
+                        path="/task/create"
+                        element={
+                            <TaskPage
+                                tasks={data}
+                                project={project}
+                                onSaved={refetch}
+                            />
+                        }
+                    />
+                )}
+                <Route
+                    path="/task/:taskId/edit"
+                    element={
+                        <TaskPage
+                            tasks={data}
+                            project={project}
+                            onSaved={refetch}
+                        />
+                    }
+                />
+            </Routes>
         </div>
     )
 }
 export default Content
 
-const TaskItem = ({ task }: { task: Task }) => {
+const TaskItem = ({
+    project,
+    task,
+    onDeleted,
+}: {
+    project: Project | undefined
+    task: Task
+    onDeleted?: () => void
+}) => {
+    const isPeriod = toHumanDate(task.start) !== toHumanDate(task.end)
+    const navigate = useNavigate()
+
+    const handleDelete = async () => {
+        try {
+            await callApi({
+                path: '/tasks/delete',
+                method: 'DELETE',
+                query: { id: task.id },
+            })
+
+            onDeleted?.()
+        } catch {
+            alert('Не удалось удалить задачу')
+        }
+    }
+
     return (
         <div className={style.taskMargin}>
             <div className={style.task}>
@@ -61,16 +174,31 @@ const TaskItem = ({ task }: { task: Task }) => {
                     <span>{task.name}</span>
                 </div>
                 <div>
-                    <button className={style.button}>Изменить</button>
-                    <button className={style.button}>Удалить</button>
+                    <button
+                        className={style.button}
+                        onClick={() =>
+                            navigate(
+                                `/project/${project?.id ?? 'today'}/task/${
+                                    task.id
+                                }/edit`
+                            )
+                        }
+                    >
+                        Изменить
+                    </button>
+                    <button className={style.button} onClick={handleDelete}>
+                        Удалить
+                    </button>
                 </div>
             </div>
             <div className={style.subtask}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Provident illo, numquam quia, saepe mollitia modi excepturi
-                sint, fugiat facilis omnis laboriosam?
+                {task.description || 'Без описания'}
             </div>
-            <div className={style.date}>09.12.2022</div>
+            <div className={style.date}>
+                {isPeriod
+                    ? `${toHumanDate(task.start)} - ${toHumanDate(task.end)}`
+                    : toHumanDate(task.start)}
+            </div>
         </div>
     )
 }

@@ -43,7 +43,8 @@ const ProjectPage = ({
 
             navigate('/', { replace: true })
             onSaved?.()
-        } catch {
+        } catch (e) {
+            console.log(e)
             alert('Не удалось сохранить проект')
         } finally {
             setIsSaving(false)
