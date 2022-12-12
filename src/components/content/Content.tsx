@@ -184,9 +184,7 @@ const TaskItem = ({
                         className={style.button}
                         onClick={() =>
                             navigate(
-                                `/project/${project?.id ?? 'today'}/task/${
-                                    task.id
-                                }/edit`
+                                `/project/${task.project.id}/task/${task.id}/edit`
                             )
                         }
                     >
