@@ -90,7 +90,11 @@ const Content = ({ projects }: { projects: Project[] }) => {
                         ) : (
                             <>
                                 {data.map((task) => (
-                                    <TaskItem key={task.id} task={task} />
+                                    <TaskItem
+                                        key={task.id}
+                                        task={task}
+                                        onDeleted={refetch}
+                                    />
                                 ))}
                                 {project ? (
                                     <button
