@@ -45,13 +45,11 @@ const TaskPage = ({
         try {
             fromHumanDate(startTime)
         } catch {
-            setError('Введите дату начала в формате DD.MM.YYYY')
             return
         }
         try {
             fromHumanDate(endTime)
         } catch {
-            setError('Введите дату конца в формате DD.MM.YYYY')
             return
         }
 
@@ -99,12 +97,12 @@ const TaskPage = ({
             />
             <input
                 value={startTime}
-                placeholder="Дата начала DD.MM.YYYY"
+                type="date"
                 onChange={(e) => setStartTime(e.target.value)}
             />
             <input
                 value={endTime}
-                placeholder="Дата конца DD.MM.YYYY"
+                type="date"
                 onChange={(e) => setEndTime(e.target.value)}
             />
 

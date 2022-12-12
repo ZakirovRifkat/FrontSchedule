@@ -7,22 +7,22 @@ export const formatDate = (d: Date) =>
 
 export const toHumanDate = (zonedDate: string) => {
     const date = new Date(Date.parse(zonedDate))
-    return `${pad(date.getDate())}.${pad(
-        date.getMonth() + 1
-    )}.${date.getFullYear()}`
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+        date.getDate()
+    )}`
 }
 
 export const fromHumanDate = (string: string) => {
-    const match = string.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/)
+    const match = string.match(/^(\d{1,4})-(\d{1,2})-(\d{1,2})$/)
     if (!match) {
         throw new Error('Invalid date')
     }
 
     const date = new Date()
     date.setFullYear(
-        parseInt(match[3], 10),
-        parseInt(match[2], 10),
-        parseInt(match[1], 10)
+        parseInt(match[1], 10),
+        parseInt(match[2], 10) - 1,
+        parseInt(match[3], 10)
     )
 
     return date
