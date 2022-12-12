@@ -5,7 +5,7 @@ import ErrorMessage from 'components/error-message/ErrorMessage'
 import Spinner from 'components/spinner/Spinner'
 import TaskPage from 'components/task-page/TaskPage'
 import { callApi, useQuery } from 'lib/api'
-import { toHumanDate } from 'lib/time'
+import { toHumanDate, toInputDate } from 'lib/time'
 import { useEffect } from 'react'
 import { Navigate, Route, Routes, useNavigate } from 'react-router'
 import style from './Content.module.css'
@@ -149,7 +149,7 @@ const TaskItem = ({
     task: Task
     onDeleted?: () => void
 }) => {
-    const isPeriod = toHumanDate(task.start) !== toHumanDate(task.end)
+    const isPeriod = toInputDate(task.start) !== toInputDate(task.end)
     const navigate = useNavigate()
 
     const handleDelete = async () => {

@@ -1,7 +1,7 @@
 import { Project } from 'api/project'
 import { Task } from 'api/task'
 import { callApi } from 'lib/api'
-import { formatDate, fromHumanDate, toHumanDate } from 'lib/time'
+import { formatDate, fromInputDate, toInputDate } from 'lib/time'
 import { FormEvent, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styles from './TaskPage.module.css'
@@ -28,10 +28,10 @@ const TaskPage = ({
     const [name, setName] = useState(task?.name ?? '')
     const [description, setDescription] = useState(task?.description ?? '')
     const [startTime, setStartTime] = useState(() =>
-        task ? toHumanDate(task.start) : ''
+        task ? toInputDate(task.start) : ''
     )
     const [endTime, setEndTime] = useState(() =>
-        task ? toHumanDate(task.end) : ''
+        task ? toInputDate(task.end) : ''
     )
 
     const handleSubmit = async (e: FormEvent) => {
@@ -43,12 +43,12 @@ const TaskPage = ({
         }
 
         try {
-            fromHumanDate(startTime)
+            fromInputDate(startTime)
         } catch {
             return
         }
         try {
-            fromHumanDate(endTime)
+            fromInputDate(endTime)
         } catch {
             return
         }
@@ -64,8 +64,8 @@ const TaskPage = ({
                     id: task ? task.id : project?.id,
                     name,
                     description,
-                    start: formatDate(fromHumanDate(startTime)),
-                    end: formatDate(fromHumanDate(endTime)),
+                    start: formatDate(fromInputDate(startTime)),
+                    end: formatDate(fromInputDate(endTime)),
                     status: task?.status ?? false,
                     priority: task?.priority ?? 0,
                 },
