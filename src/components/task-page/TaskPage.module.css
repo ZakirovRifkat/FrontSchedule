@@ -3,4 +3,62 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    align-items: center;
+}
+.title {
+    position: relative;
+    left: -95px;
+}
+.buttonCreateTask {
+    font-size: 16px;
+    padding: 8px 16px;
+    border: 2px solid rgba(0, 0, 0, 0.308);
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: background 0.1s;
+    display: flex;
+    /* position: relative;
+    left: 128px; */
+}
+.buttonCreateTask:hover {
+    background-color: #ddd;
+    transition: 0.3s;
+}
+.taskName {
+    padding: 8px 16px;
+    border: 2px solid rgba(0, 0, 0, 0.308);
+    border-radius: 12px;
+    background: white;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.856);
+    width: 315px;
+}
+.taskDescription {
+    padding: 8px 16px;
+    border: 2px solid rgba(0, 0, 0, 0.308);
+    border-radius: 12px;
+    background: white;
+    font-size: 14px;
+    height: 100px;
+    color: rgba(0, 0, 0, 0.856);
+    font-family: 'Roboto', sans-serif;
+    width: 315px;
+    resize: none;
+}
+.taskDate {
+    font-family: 'Roboto', sans-serif;
+    border: 2px solid rgba(0, 0, 0, 0.308);
+    color: rgba(0, 0, 0, 0.781);
+    border-radius: 12px;
+    padding: 8px 16px;
+    background: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    width: 350px;
 }

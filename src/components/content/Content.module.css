@@ -21,6 +21,7 @@
     background-color: #fff;
     border: 1px solid #333;
     border-radius: 3px;
+    margin-right: 10px;
 }
 .subtask {
     margin: 5px 200px 0 110px;
@@ -37,14 +38,31 @@
 }
 .button {
     margin: 0 3px;
-    outline: none;
-    border: none;
-    border-radius: 4px;
-    padding: 4px 6px;
-    background-color: rgba(144, 145, 145, 0.193);
-    color: rgb(48, 48, 48);
+    font-size: 14px;
+    padding: 4px 8px;
+    border: 2px solid rgba(0, 0, 0, 0.308);
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: background 0.1s;
 }
 .button:hover {
+    background-color: rgba(144, 145, 145, 0.5);
+    transition: 0.2s;
+}
+.buttonCreateTask {
+    margin: 0 3px;
+    font-size: 14px;
+    padding: 4px 8px;
+    border: 2px solid rgba(0, 0, 0, 0.308);
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: background 0.1s;
+    position: relative;
+    left: 70px;
+}
+.buttonCreateTask:hover {
     background-color: rgba(144, 145, 145, 0.5);
     transition: 0.2s;
 }

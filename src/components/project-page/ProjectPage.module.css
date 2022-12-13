@@ -4,3 +4,28 @@
     flex-direction: column;
     gap: 16px;
 }
+.title {
+    display: flex;
+    align-self: center;
+}
+.name {
+    outline: none;
+    padding: 6px;
+    border-radius: 12px;
+    border-color: rgba(0, 0, 0, 0.301);
+    color: rgba(0, 0, 0, 0.753);
+    font-size: 16px;
+}
+.buttonCreate {
+    font-size: 16px;
+    padding: 8px 16px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+.buttonCreate:hover {
+    background-color: #ddd;
+    transition: 0.3s;
+}

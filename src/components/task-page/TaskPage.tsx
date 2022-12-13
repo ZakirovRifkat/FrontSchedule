@@ -83,34 +83,48 @@ const TaskPage = ({
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <h2>{task ? 'Изменить задачу' : 'Новая задача'}</h2>
+            <h2 className={styles.title}>
+                {task ? 'Изменить задачу' : 'Новая задача'}
+            </h2>
 
             <input
                 value={name}
+                className={styles.taskName}
                 placeholder="Название"
                 onChange={(e) => setName(e.target.value)}
             />
-            <input
+            <textarea
                 value={description}
+                className={styles.taskDescription}
                 placeholder="Описание"
                 onChange={(e) => setDescription(e.target.value)}
             />
-            <input
-                value={startTime}
-                type="date"
-                onChange={(e) => setStartTime(e.target.value)}
-            />
-            <input
-                value={endTime}
-                type="date"
-                onChange={(e) => setEndTime(e.target.value)}
-            />
+            <div>
+                <input
+                    value={startTime}
+                    className={styles.taskDate}
+                    type="date"
+                    onChange={(e) => setStartTime(e.target.value)}
+                />
+                <input
+                    value={endTime}
+                    className={styles.taskDate}
+                    type="date"
+                    onChange={(e) => setEndTime(e.target.value)}
+                />
+            </div>
 
             {error ? <div>{error}</div> : null}
 
-            <button type="submit" disabled={isSaving}>
-                {task ? 'Сохранить' : 'Создать'}
-            </button>
+            <div className={styles.buttons}>
+                <button
+                    className={styles.buttonCreateTask}
+                    type="submit"
+                    disabled={isSaving}
+                >
+                    {task ? 'Сохранить' : 'Создать'}
+                </button>
+            </div>
         </form>
     )
 }

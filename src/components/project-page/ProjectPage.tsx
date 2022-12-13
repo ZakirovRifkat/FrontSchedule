@@ -53,17 +53,24 @@ const ProjectPage = ({
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <h2>{project ? 'Изменение проекта' : 'Новый проект'}</h2>
+            <h2 className={styles.title}>
+                {project ? 'Изменение проекта' : 'Новый проект'}
+            </h2>
 
             <input
                 value={name}
+                className={styles.name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Название"
             />
 
             {error ? <div>{error}</div> : null}
 
-            <button type="submit" disabled={isSaving}>
+            <button
+                className={styles.buttonCreate}
+                type="submit"
+                disabled={isSaving}
+            >
                 {project ? 'Сохранить' : 'Создать'}
             </button>
         </form>

@@ -98,6 +98,7 @@ const Content = ({ projects }: { projects: Project[] }) => {
                                 ))}
                                 {project ? (
                                     <button
+                                        className={style.buttonCreateTask}
                                         onClick={() =>
                                             navigate(
                                                 `/project/${project.id}/task/create`

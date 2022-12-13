@@ -85,7 +85,7 @@ const Menu = ({
                 }
             >
                 {!projects.length ? (
-                    <div>Нет проектов</div>
+                    <div className={styles.noProject}>Нет проектов</div>
                 ) : (
                     projects.map((project) => (
                         <div
