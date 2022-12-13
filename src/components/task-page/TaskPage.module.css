@@ -18,8 +18,6 @@
     cursor: pointer;
     transition: background 0.1s;
     display: flex;
-    /* position: relative;
-    left: 128px; */
 }
 .buttonCreateTask:hover {
     background-color: #ddd;
@@ -51,14 +49,19 @@
     border: 2px solid rgba(0, 0, 0, 0.308);
     color: rgba(0, 0, 0, 0.781);
     border-radius: 12px;
-    padding: 8px 16px;
+    padding: 8px 10px;
     background: white;
     font-size: 16px;
     cursor: pointer;
-    margin: 0 10px;
+    position: relative;
 }
 .buttons {
     display: flex;
     justify-content: flex-end;
     width: 350px;
+}
+.dateBlock {
+    display: flex;
+    width: 351px;
+    justify-content: space-between;
 }
