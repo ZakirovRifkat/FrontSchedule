@@ -1,7 +1,7 @@
 import { Project } from 'api/project'
 import { Task } from 'api/task'
 import { callApi } from 'lib/api'
-import { formatDate, fromInputDate, toInputDate } from 'lib/time'
+import { formatDate } from 'lib/time'
 import { FormEvent, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styles from './TaskPage.module.css'
@@ -29,11 +29,11 @@ const TaskPage = ({
 
     const [name, setName] = useState(task?.name ?? '')
     const [description, setDescription] = useState(task?.description ?? '')
-    const [startTime, setStartTime] = useState(() =>
-        task ? toInputDate(task.start) : ''
+    const [startDate, setStartDate] = useState(() =>
+        task ? new Date(Date.parse(task.start)) : null
     )
-    const [endTime, setEndTime] = useState(() =>
-        task ? toInputDate(task.end) : ''
+    const [endDate, setEndDate] = useState(() =>
+        task ? new Date(Date.parse(task.end)) : null
     )
 
     const handleSubmit = async (e: FormEvent) => {
@@ -44,14 +44,8 @@ const TaskPage = ({
             return
         }
 
-        try {
-            fromInputDate(startTime)
-        } catch {
-            return
-        }
-        try {
-            fromInputDate(endTime)
-        } catch {
+        if (!startDate || !endDate) {
+            setError('Введите даты начала и конца')
             return
         }
 
@@ -66,8 +60,8 @@ const TaskPage = ({
                     id: task ? task.id : project?.id,
                     name,
                     description,
-                    start: formatDate(fromInputDate(startTime)),
-                    end: formatDate(fromInputDate(endTime)),
+                    start: formatDate(startDate),
+                    end: formatDate(endDate),
                     status: task?.status ?? false,
                     priority: task?.priority ?? 0,
                 },
@@ -82,11 +76,7 @@ const TaskPage = ({
             setIsSaving(false)
         }
     }
-    const [dateRange, setDateRange] = useState([
-        null,
-        null,
-    ]) /*вот эта штука для работы datepicker*/
-    const [startDate, endDate] = dateRange
+
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
             <h2 className={styles.title}>
@@ -106,26 +96,20 @@ const TaskPage = ({
                 onChange={(e) => setDescription(e.target.value)}
             />
             <div className={styles.dateBlock}>
-                {/* <input
-                    value={startTime}
-                    className={styles.taskDate}
-                    type="date"
-                    onChange={(e) => setStartTime(e.target.value)}
-                />
-                <input
-                    value={endTime}
-                    className={styles.taskDate}
-                    type="date"
-                    onChange={(e) => setEndTime(e.target.value)}
-                /> */}
                 <DatePicker
                     className={styles.taskDate}
                     selectsRange={true}
+                    selected={startDate}
+                    allowSameDay={true}
+                    maxDate={null}
+                    dateFormat="dd.MM.yyyy"
                     startDate={startDate}
                     endDate={endDate}
-                    onChange={(update) => {
-                        setDateRange(update)
+                    onChange={([start, end]) => {
+                        setStartDate(start)
+                        setEndDate(end)
                     }}
+                    placeholderText="Даты"
                     withPortal
                 />
                 {error ? <div>{error}</div> : null}
