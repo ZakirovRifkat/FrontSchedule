@@ -4,7 +4,15 @@ import image2 from '../../assets/home.png'
 import image3 from '../../assets/search.png'
 import { useNavigate } from 'react-router'
 
-const Header = ({ toggleMenu }: { toggleMenu: () => void }) => {
+const Header = ({
+    toggleMenu,
+    search,
+    setSearch,
+}: {
+    toggleMenu: () => void
+    search: string
+    setSearch: (search: string) => void
+}) => {
     const navigate = useNavigate()
 
     return (
@@ -30,7 +38,9 @@ const Header = ({ toggleMenu }: { toggleMenu: () => void }) => {
                         className={style.searchInput}
                         type="text"
                         placeholder="Поиск"
-                    ></input>
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
                 </div>
             </div>
             <div className={style.logo}>Планировщик личных дел</div>

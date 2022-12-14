@@ -18,7 +18,13 @@ const pathsForFilters: Record<Filter, string> = {
     [Filter.overdue]: '/tasks/notdone',
 }
 
-const Content = ({ projects }: { projects: Project[] }) => {
+const Content = ({
+    search,
+    projects,
+}: {
+    search: string
+    projects: Project[]
+}) => {
     const [contentType] = useContentType()
     const navigate = useNavigate()
 
@@ -52,6 +58,8 @@ const Content = ({ projects }: { projects: Project[] }) => {
             />
         )
     }
+
+    const tasks = data.filter((task) => task.name.includes(search.trim()))
 
     const project = projects.find((p) => p.id === contentType)
     const projectName =
@@ -153,10 +161,18 @@ const Content = ({ projects }: { projects: Project[] }) => {
                                     </button>
                                 </>
                             ) : null}
-                            {!data.length ? (
+                            {!tasks.length ? (
                                 <Alert
-                                    text="Ни одной задачи, как неожиданно и приятно"
-                                    buttonText={project ? 'Создать' : undefined}
+                                    text={
+                                        search.trim()
+                                            ? 'По этому поисковому запросу нет задач'
+                                            : 'Ни одной задачи, как неожиданно и приятно'
+                                    }
+                                    buttonText={
+                                        project && !search.trim()
+                                            ? 'Создать'
+                                            : undefined
+                                    }
                                     onButtonClick={
                                         project
                                             ? () =>
@@ -168,7 +184,7 @@ const Content = ({ projects }: { projects: Project[] }) => {
                                 />
                             ) : (
                                 <>
-                                    {data.map((task) => (
+                                    {tasks.map((task) => (
                                         <TaskItem
                                             key={task.id}
                                             task={task}
@@ -197,7 +213,7 @@ const Content = ({ projects }: { projects: Project[] }) => {
                         path="/task/create"
                         element={
                             <TaskPage
-                                tasks={data}
+                                tasks={tasks}
                                 project={project}
                                 onSaved={refetch}
                             />
@@ -208,7 +224,7 @@ const Content = ({ projects }: { projects: Project[] }) => {
                     path="/task/:taskId/edit"
                     element={
                         <TaskPage
-                            tasks={data}
+                            tasks={tasks}
                             project={project}
                             onSaved={refetch}
                         />

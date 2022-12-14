@@ -1,16 +1,21 @@
-import { Project, ProjectList } from 'api/project'
+import { ProjectList } from 'api/project'
 import Alert from 'components/alert/Alert'
 import ErrorMessage from 'components/error-message/ErrorMessage'
 import ProjectPage from 'components/project-page/ProjectPage'
 import Spinner from 'components/spinner/Spinner'
-import TaskPage from 'components/task-page/TaskPage'
 import { useQuery } from 'lib/api'
 import { Navigate, Route, Routes, useNavigate } from 'react-router'
 import Content from '../content/Content'
 import Menu from '../menu/Menu'
 import styles from './Main.module.css'
 
-const Main = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
+const Main = ({
+    isMenuOpen,
+    search,
+}: {
+    search: string
+    isMenuOpen: boolean
+}) => {
     const navigate = useNavigate()
     const { isLoading, error, data, refetch } = useQuery('projects', {
         path: '/projects/all',
@@ -86,7 +91,9 @@ const Main = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
                         />
                         <Route
                             path="/project/:projectId/*"
-                            element={<Content projects={data} />}
+                            element={
+                                <Content search={search} projects={data} />
+                            }
                         />
                         <Route
                             path="*"

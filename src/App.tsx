@@ -17,6 +17,7 @@ function App() {
         })
     })
 
+    const [search, setSearch] = useState('')
     const [isMenuOpen, setIsMenuOpen] = useState(true)
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
@@ -24,8 +25,12 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <div className="body">
-                    <Header toggleMenu={toggleMenu} />
-                    <Main isMenuOpen={isMenuOpen} />
+                    <Header
+                        search={search}
+                        setSearch={setSearch}
+                        toggleMenu={toggleMenu}
+                    />
+                    <Main search={search} isMenuOpen={isMenuOpen} />
                 </div>
             </BrowserRouter>
         </QueryClientProvider>
