@@ -2,10 +2,11 @@ import { useQuery as useQueryLib } from 'react-query'
 import { mask, Struct } from 'superstruct'
 import { keysOf } from './util'
 
+type Query = Record<string, string | boolean | number | undefined>
 type Options<T extends unknown> = {
     path: string
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
-    query?: Record<string, string | number | boolean | undefined>
+    query?: Query
     body?: unknown
     parser?: Struct<T>
 }
@@ -22,13 +23,7 @@ export const callApi = async <T extends unknown>({
     body,
     parser,
 }: Options<T>): Promise<T> => {
-    const url = [
-        process.env.REACT_APP_API_HOST,
-        path,
-        query ? '?' + toQueryString(query) : undefined,
-    ]
-        .filter(Boolean)
-        .join('')
+    const url = formatPath({ path, query })
     const response = await fetch(url, {
         method,
         headers: body ? { 'Content-Type': 'application/json' } : undefined,
@@ -50,9 +45,16 @@ export const callApi = async <T extends unknown>({
     return data
 }
 
-const toQueryString = (
-    query: Record<string, string | boolean | number | undefined>
-): string => {
+export const formatPath = ({ path, query }: { path: string; query?: Query }) =>
+    [
+        path.includes('://') ? null : process.env.REACT_APP_API_HOST,
+        path,
+        query ? '?' + toQueryString(query) : null,
+    ]
+        .filter(Boolean)
+        .join('')
+
+const toQueryString = (query: Query): string => {
     const searchParams = new URLSearchParams()
     for (const key of keysOf(query)) {
         if (query[key] !== undefined) {

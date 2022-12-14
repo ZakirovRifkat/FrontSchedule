@@ -31,6 +31,7 @@ export const fromInputDate = (string: string) => {
         parseInt(match[2], 10) - 1,
         parseInt(match[3], 10)
     )
+    date.setHours(0, 0, 0, 0)
 
     return date
 }

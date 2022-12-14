@@ -4,10 +4,11 @@ import Alert from 'components/alert/Alert'
 import ErrorMessage from 'components/error-message/ErrorMessage'
 import Spinner from 'components/spinner/Spinner'
 import TaskPage from 'components/task-page/TaskPage'
-import { callApi, useQuery } from 'lib/api'
+import { callApi, formatPath, useQuery } from 'lib/api'
 import { toHumanDate, toInputDate } from 'lib/time'
 import { useEffect } from 'react'
 import { Navigate, Route, Routes, useNavigate } from 'react-router'
+import { boolean, object } from 'superstruct'
 import style from './Content.module.css'
 import { Filter, useContentType } from './use-content-type'
 
@@ -66,6 +67,73 @@ const Content = ({ projects }: { projects: Project[] }) => {
         return <Navigate to="/" />
     }
 
+    const authorizeGoogle = async () => {
+        try {
+            const { authorized } = await callApi({
+                path: '/google/is-authorized',
+                method: 'GET',
+                parser: object({ authorized: boolean() }),
+            })
+
+            if (!authorized) {
+                window.location.href = formatPath({
+                    path: 'https://accounts.google.com/o/oauth2/v2/auth',
+                    query: {
+                        scope: 'https://www.googleapis.com/auth/calendar.events',
+                        access_type: 'offline',
+                        include_granted_scopes: true,
+                        response_type: 'code',
+                        redirect_uri: formatPath({ path: '/google/callback' }),
+                        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+                        state: window.location.href,
+                    },
+                })
+                return false
+            }
+            return true
+        } catch (e) {
+            console.error(e)
+            return false
+        }
+    }
+
+    const handleUploadToGoogle = async () => {
+        if (!project || !(await authorizeGoogle())) {
+            return
+        }
+
+        try {
+            await callApi({
+                path: '/google/upload',
+                method: 'POST',
+                query: { projectId: project.id },
+            })
+            alert('Задачи выгружены')
+        } catch (e) {
+            console.error(e)
+            alert('Не удалось выгрузить задачи')
+        }
+    }
+
+    const handleDownloadFromGoogle = async () => {
+        if (!project || !(await authorizeGoogle())) {
+            return
+        }
+
+        try {
+            await callApi({
+                path: '/google/download',
+                method: 'POST',
+                query: { projectId: project.id },
+            })
+            alert('Задачи выгружены')
+            refetch()
+        } catch (e) {
+            console.error(e)
+            alert('Не удалось выгрузить задачи')
+        }
+    }
+
     return (
         <div className={style.form}>
             <div className={style.title}>{projectName}</div>
@@ -74,42 +142,54 @@ const Content = ({ projects }: { projects: Project[] }) => {
                 <Route
                     index
                     element={
-                        !data.length ? (
-                            <Alert
-                                text="Ни одной задачи, как неожиданно и приятно"
-                                buttonText={project ? 'Создать' : undefined}
-                                onButtonClick={
-                                    project
-                                        ? () =>
-                                              navigate(
-                                                  `/project/${project.id}/task/create`
-                                              )
-                                        : undefined
-                                }
-                            />
-                        ) : (
-                            <>
-                                {data.map((task) => (
-                                    <TaskItem
-                                        key={task.id}
-                                        task={task}
-                                        onDeleted={refetch}
-                                    />
-                                ))}
-                                {project ? (
-                                    <button
-                                        className={style.buttonCreateTask}
-                                        onClick={() =>
-                                            navigate(
-                                                `/project/${project.id}/task/create`
-                                            )
-                                        }
-                                    >
-                                        Создать задачу
+                        <>
+                            {project ? (
+                                <>
+                                    <button onClick={handleUploadToGoogle}>
+                                        Выгрузить задачи в гугл календарь
                                     </button>
-                                ) : null}
-                            </>
-                        )
+                                    <button onClick={handleDownloadFromGoogle}>
+                                        Скачать задачи из гугл календаря
+                                    </button>
+                                </>
+                            ) : null}
+                            {!data.length ? (
+                                <Alert
+                                    text="Ни одной задачи, как неожиданно и приятно"
+                                    buttonText={project ? 'Создать' : undefined}
+                                    onButtonClick={
+                                        project
+                                            ? () =>
+                                                  navigate(
+                                                      `/project/${project.id}/task/create`
+                                                  )
+                                            : undefined
+                                    }
+                                />
+                            ) : (
+                                <>
+                                    {data.map((task) => (
+                                        <TaskItem
+                                            key={task.id}
+                                            task={task}
+                                            onDeleted={refetch}
+                                        />
+                                    ))}
+                                    {project ? (
+                                        <button
+                                            className={style.buttonCreateTask}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/project/${project.id}/task/create`
+                                                )
+                                            }
+                                        >
+                                            Создать задачу
+                                        </button>
+                                    ) : null}
+                                </>
+                            )}
+                        </>
                     }
                 />
                 {!project ? null : (
