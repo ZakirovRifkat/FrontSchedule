@@ -1,12 +1,13 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
-import "./index.css"
-import App from "./App"
-import reportWebVitals from "./reportWebVitals"
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './components/app/App'
+import reportWebVitals from './reportWebVitals'
+import './index.css'
+import 'react-datepicker/dist/react-datepicker.css'
 
-const node = document.getElementById("root")
+const node = document.getElementById('root')
 if (!node) {
-    throw new Error("Root node not found")
+    throw new Error('Root node not found')
 }
 
 const root = ReactDOM.createRoot(node)

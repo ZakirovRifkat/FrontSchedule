@@ -1,4 +1,4 @@
-import { useQuery as useQueryLib } from 'react-query'
+import { QueryKey, useQuery as useQueryLib } from 'react-query'
 import { mask, Struct } from 'superstruct'
 import { keysOf } from './util'
 
@@ -12,9 +12,10 @@ type Options<T extends unknown> = {
 }
 
 export const useQuery = <T extends unknown>(
-    name: string,
-    options: Options<T>
-) => useQueryLib(name, () => callApi(options))
+    name: QueryKey,
+    options: Options<T>,
+    { enabled }: { enabled?: boolean } = {}
+) => useQueryLib(name, () => callApi(options), { enabled })
 
 export const callApi = async <T extends unknown>({
     path,

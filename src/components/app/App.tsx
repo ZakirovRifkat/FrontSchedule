@@ -1,6 +1,5 @@
 import './App.css'
-import Header from './components/header/Header'
-import Main from './components/main/Main'
+import Router from '../router/Router'
 import { useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -11,27 +10,17 @@ function App() {
             defaultOptions: {
                 queries: {
                     retry: false,
+                    staleTime: Infinity,
                     refetchOnWindowFocus: false,
                 },
             },
         })
     })
 
-    const [search, setSearch] = useState('')
-    const [isMenuOpen, setIsMenuOpen] = useState(true)
-    const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                <div className="body">
-                    <Header
-                        search={search}
-                        setSearch={setSearch}
-                        toggleMenu={toggleMenu}
-                    />
-                    <Main search={search} isMenuOpen={isMenuOpen} />
-                </div>
+                <Router />
             </BrowserRouter>
         </QueryClientProvider>
     )

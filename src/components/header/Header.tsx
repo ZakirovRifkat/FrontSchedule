@@ -3,6 +3,7 @@ import image1 from '../../assets/menu.png'
 import image2 from '../../assets/home.png'
 import image3 from '../../assets/search.png'
 import { useNavigate } from 'react-router'
+import { toDefaultPageUrl } from 'lib/url'
 
 const Header = ({
     toggleMenu,
@@ -28,7 +29,7 @@ const Header = ({
                         <img
                             src={image2}
                             className={style.icon}
-                            onClick={() => navigate('/projects/today')}
+                            onClick={() => navigate(toDefaultPageUrl())}
                         />
                     </div>
                 </div>

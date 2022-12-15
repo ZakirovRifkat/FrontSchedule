@@ -1,9 +1,10 @@
 import { ReactNode, useState } from 'react'
 import styles from './Menu.module.css'
 import clsx from 'clsx'
-import { Filter, useContentType } from 'components/content/use-content-type'
+import { Filter, useListType } from 'components/task-list/use-list-type'
 import { Project } from 'api/project'
 import { useNavigate } from 'react-router'
+import { toNewProjectUrl } from 'lib/url'
 
 const Menu = ({
     isMenuOpen,
@@ -12,12 +13,12 @@ const Menu = ({
     isMenuOpen: boolean
     projects: Project[]
 }) => {
-    const [isProjectsExpanded, setIsProjectsExpanded] = useState(false)
+    const [isProjectsExpanded, setIsProjectsExpanded] = useState(true)
     const toggleProjects = () => {
         setIsProjectsExpanded(!isProjectsExpanded)
     }
 
-    const [contentType, setContentType] = useContentType()
+    const [contentType, setContentType] = useListType()
     const navigate = useNavigate()
 
     return (
@@ -56,7 +57,7 @@ const Menu = ({
                     <div className={styles.project}>Проекты</div>
                     <button
                         className={styles.addProjectButton}
-                        onClick={() => navigate('/project/create')}
+                        onClick={() => navigate(toNewProjectUrl())}
                     >
                         +
                     </button>

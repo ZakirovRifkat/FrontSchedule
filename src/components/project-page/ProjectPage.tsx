@@ -1,27 +1,41 @@
-import { Project } from 'api/project'
-import { callApi } from 'lib/api'
+import {
+    createProject,
+    PROJECTS_QUERY_KEY,
+    updateProject,
+    useProjects,
+} from 'api/project'
+import { toDefaultPageUrl, toTasksListUrl } from 'lib/url'
 import { FormEvent, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useQueryClient } from 'react-query'
+import { Navigate, useNavigate, useParams } from 'react-router'
 import styles from './ProjectPage.module.css'
 
-const ProjectPage = ({
-    projects,
-    onSaved,
-}: {
-    projects: Project[]
-    onSaved?: () => void
-}) => {
+const ProjectPage = () => {
+    const navigate = useNavigate()
+    const queryClient = useQueryClient()
+
     const { projectId } = useParams()
+    const isUpdating = projectId !== undefined
+
+    const { data: projects } = useProjects({ enabled: isUpdating })
     const project = useMemo(
-        () => projects.find((p) => String(p.id) === projectId),
+        () => projects?.find((p) => String(p.id) === projectId),
         [projectId, projects]
     )
-    const navigate = useNavigate()
 
     const [isSaving, setIsSaving] = useState(false)
     const [error, setError] = useState<null | string>(null)
 
     const [name, setName] = useState(project?.name ?? '')
+
+    if (isUpdating) {
+        if (!projects) {
+            return null
+        }
+        if (!project) {
+            return <Navigate to={toDefaultPageUrl()} />
+        }
+    }
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -35,14 +49,12 @@ const ProjectPage = ({
             setIsSaving(true)
             setError(null)
 
-            await callApi({
-                path: project ? '/projects/update' : '/projects/add',
-                method: project ? 'PUT' : 'POST',
-                query: { name },
-            })
+            const updatedProject = await (project
+                ? updateProject(project.id, { name })
+                : createProject({ name }))
 
-            navigate('/', { replace: true })
-            onSaved?.()
+            await queryClient.invalidateQueries(PROJECTS_QUERY_KEY)
+            navigate(toTasksListUrl(updatedProject.id), { replace: true })
         } catch (e) {
             console.log(e)
             alert('Не удалось сохранить проект')
@@ -54,7 +66,7 @@ const ProjectPage = ({
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
             <h2 className={styles.title}>
-                {project ? 'Изменение проекта' : 'Новый проект'}
+                {isUpdating ? 'Изменение проекта' : 'Новый проект'}
             </h2>
 
             <input
@@ -71,7 +83,7 @@ const ProjectPage = ({
                 type="submit"
                 disabled={isSaving}
             >
-                {project ? 'Сохранить' : 'Создать'}
+                {isUpdating ? 'Сохранить' : 'Создать'}
             </button>
         </form>
     )

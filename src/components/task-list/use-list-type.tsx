@@ -1,3 +1,4 @@
+import { toTasksListUrl } from 'lib/url'
 import { includes, valuesOf } from 'lib/util'
 import { useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -7,24 +8,24 @@ export enum Filter {
     overdue = 'overdue',
     oncoming = 'oncoming',
 }
-export type ContentType = Filter | number
+export type ListType = Filter | number
 
-export const useContentType = () => {
+export const useListType = () => {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const contentType = getContentType(location.pathname)
-    const setContentType = useCallback(
-        (nextContentType: ContentType) => {
-            navigate(`/project/${nextContentType}`)
+    const listType = getListType(location.pathname)
+    const setListType = useCallback(
+        (nextListType: ListType) => {
+            navigate(toTasksListUrl(nextListType))
         },
         [navigate]
     )
 
-    return [contentType, setContentType] as const
+    return [listType, setListType] as const
 }
 
-const getContentType = (path: string): ContentType => {
+const getListType = (path: string): ListType => {
     const match = path.match(/^\/project\/([^/]+)/)
     if (!match) {
         return Filter.today

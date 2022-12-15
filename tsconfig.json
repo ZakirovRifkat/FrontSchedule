@@ -8,6 +8,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
+        "strictFunctionTypes": true,
         "forceConsistentCasingInFileNames": true,
         "module": "esnext",
         "moduleResolution": "node",
@@ -15,6 +16,7 @@
         "isolatedModules": true,
         "noEmit": true,
         "noFallthroughCasesInSwitch": true,
+        "strictNullChecks": true,
         "jsx": "react-jsx",
         "baseUrl": "./src",
         "types": ["react-scripts"]

@@ -1,0 +1,33 @@
+.task {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 70px 0 70px;
+    color: rgb(48, 48, 48);
+    font-size: 26px;
+}
+.check {
+    outline: none;
+    height: 16px;
+    width: 16px;
+    background-color: #fff;
+    border: 1px solid #333;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+.subtask {
+    margin: 5px 200px 0 110px;
+    color: rgb(48, 48, 48);
+    font-size: 16px;
+}
+.taskMargin {
+    margin: 30px 0;
+}
+.date {
+    margin: 10px 200px 0 110px;
+    color: rgb(48, 48, 48);
+    font-size: 15px;
+}
+
+.paragraph {
+    margin: 0 0 2px;
+}
