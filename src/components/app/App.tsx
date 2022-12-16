@@ -1,4 +1,3 @@
-import './App.css'
 import Router from '../router/Router'
 import { useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
