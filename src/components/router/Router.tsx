@@ -61,7 +61,6 @@ const Router = () => {
 
             <div className={styles.mainContent}>
                 <Routes>
-                    <Route path="*" element={null} />
                     {/* Проекты */}
                     <Route
                         path={toProjectPageUrl(':projectId')}

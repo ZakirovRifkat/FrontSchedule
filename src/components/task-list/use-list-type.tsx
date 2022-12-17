@@ -26,7 +26,7 @@ export const useListType = () => {
 }
 
 const getListType = (path: string): ListType => {
-    const match = path.match(/^\/project\/([^/]+)/)
+    const match = path.match(/^\/(?:project|group)\/([^/]+)/)
     if (!match) {
         return Filter.today
     }
