@@ -68,6 +68,7 @@ const TaskEditor = ({
 
     const [name, setName] = useState(task?.name ?? '')
     const [description, setDescription] = useState(task?.description ?? '')
+    const [priority, setPriority] = useState(task?.priority ?? 0)
     const [startDate, setStartDate] = useState(() =>
         task ? new Date(Date.parse(task.start)) : null
     )
@@ -95,10 +96,10 @@ const TaskEditor = ({
             const data = {
                 name,
                 description,
+                priority,
                 start: startDate,
                 end: endDate,
                 status: task?.status ?? false,
-                priority: task?.priority ?? 0,
             }
             if (task) {
                 await updateTask(task.id, data)
@@ -123,6 +124,7 @@ const TaskEditor = ({
             </h2>
 
             <input
+                autoFocus
                 value={name}
                 className={styles.taskName}
                 placeholder="Название"
@@ -134,35 +136,39 @@ const TaskEditor = ({
                 placeholder="Описание"
                 onChange={(e) => setDescription(e.target.value)}
             />
-            <div className={styles.dateBlock}>
-                <DatePicker
-                    className={styles.taskDate}
-                    selectsRange={true}
-                    selected={startDate}
-                    allowSameDay={true}
-                    maxDate={null}
-                    dateFormat="dd.MM.yyyy"
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={([start, end]) => {
-                        setStartDate(start)
-                        setEndDate(end)
-                    }}
-                    placeholderText="Даты"
-                    withPortal
-                />
-                {error ? <div>{error}</div> : null}
-
-                <div className={styles.buttons}>
-                    <button
-                        className={styles.buttonCreateTask}
-                        type="submit"
-                        disabled={isSaving}
-                    >
-                        {task ? 'Сохранить' : 'Создать'}
-                    </button>
-                </div>
-            </div>
+            <DatePicker
+                className={styles.taskDate}
+                selectsRange={true}
+                selected={startDate}
+                allowSameDay={true}
+                maxDate={null}
+                dateFormat="dd.MM.yyyy"
+                startDate={startDate}
+                endDate={endDate}
+                onChange={([start, end]) => {
+                    setStartDate(start)
+                    setEndDate(end)
+                }}
+                placeholderText="Даты"
+                withPortal
+            />
+            {error ? <div>{error}</div> : null}
+            <select
+                className={styles.taskDate}
+                value={priority}
+                onChange={(e) => setPriority(+e.target.value)}
+            >
+                <option value="2">Срочно</option>
+                <option value="1">Похер</option>
+                <option value="0">Похер абсолютно</option>
+            </select>
+            <button
+                className={styles.buttonCreateTask}
+                type="submit"
+                disabled={isSaving}
+            >
+                {task ? 'Сохранить' : 'Создать'}
+            </button>
         </form>
     )
 }

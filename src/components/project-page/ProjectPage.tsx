@@ -70,6 +70,7 @@ const ProjectPage = () => {
             </h2>
 
             <input
+                autoFocus
                 value={name}
                 className={styles.name}
                 onChange={(e) => setName(e.target.value)}

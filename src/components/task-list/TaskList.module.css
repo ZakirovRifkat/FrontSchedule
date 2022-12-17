@@ -1,11 +1,14 @@
 .form {
     width: calc(100vw - 360px);
+    padding-left: 30px;
+    box-sizing: border-box;
 }
 .title {
     color: rgb(48, 48, 48);
     font-weight: 800;
     font-size: 46px;
-    margin: 20px 0 15px 30px;
+    text-transform: capitalize;
+    margin: 10px 0px;
 }
 .task {
     display: flex;
@@ -65,4 +68,11 @@
 .buttonCreateTask:hover {
     background-color: rgba(144, 145, 145, 0.5);
     transition: 0.2s;
+}
+.titleContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.horizontalLine {
 }

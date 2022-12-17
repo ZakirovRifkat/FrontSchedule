@@ -57,6 +57,14 @@ const TaskItem = ({ task }: { task: Task }) => {
                           ))}
             </div>
             <div className={styles.date}>
+                Приоритет:{' '}
+                {task.priority === 2
+                    ? `Срочно`
+                    : task.priority === 1
+                    ? `похер`
+                    : `Похер абсолютно`}
+            </div>
+            <div className={styles.date}>
                 {isPeriod
                     ? `${toHumanDate(task.start)} - ${toHumanDate(task.end)}`
                     : toHumanDate(task.start)}

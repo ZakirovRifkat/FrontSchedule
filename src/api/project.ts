@@ -34,3 +34,9 @@ export const updateProject = (projectId: number, { name }: { name: string }) =>
         query: { id: projectId, name },
         parser: Project,
     })
+export const deleteProject = (projectId: number) =>
+    callApi({
+        path: '/projects/delete',
+        method: 'DELETE',
+        query: { id: projectId },
+    })
