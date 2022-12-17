@@ -5,6 +5,7 @@ import { array, boolean, Infer, number, object, string } from 'superstruct'
 import { Project } from './project'
 
 export type Task = Infer<typeof Task>
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 const Task = object({
     id: number(),
     name: string(),

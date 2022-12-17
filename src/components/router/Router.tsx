@@ -54,14 +54,13 @@ const Router = () => {
         <div className={styles.mainContainer}>
             <Header
                 search={search}
-                setSearch={setSearch}
+                onSearchChange={setSearch}
                 toggleMenu={toggleMenu}
             />
             <Menu isMenuOpen={isMenuOpen} projects={projects} />
 
             <div className={styles.mainContent}>
                 <Routes>
-                    <Route path="*" element={null} />
                     {/* Проекты */}
                     <Route
                         path={toProjectPageUrl(':projectId')}

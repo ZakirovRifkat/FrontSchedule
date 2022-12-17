@@ -1,4 +1,4 @@
-import style from './Header.module.css'
+import styles from './Header.module.css'
 import image1 from '../../assets/menu.png'
 import image2 from '../../assets/home.png'
 import image3 from '../../assets/search.png'
@@ -8,43 +8,43 @@ import { toDefaultPageUrl } from 'lib/url'
 const Header = ({
     toggleMenu,
     search,
-    setSearch,
+    onSearchChange,
 }: {
     toggleMenu: () => void
     search: string
-    setSearch: (search: string) => void
+    onSearchChange: (search: string) => void
 }) => {
     const navigate = useNavigate()
 
     return (
-        <div className={style.header}>
-            <div className={style.headerIcons}>
+        <div className={styles.header}>
+            <div className={styles.headerIcons}>
                 <div>
-                    <div onClick={toggleMenu} className={style.button}>
-                        <img src={image1} className={style.icon}></img>
+                    <div onClick={toggleMenu} className={styles.button}>
+                        <img src={image1} className={styles.icon}></img>
                     </div>
                 </div>
                 <div>
-                    <div className={style.home}>
+                    <div className={styles.home}>
                         <img
                             src={image2}
-                            className={style.icon}
+                            className={styles.icon}
                             onClick={() => navigate(toDefaultPageUrl())}
                         />
                     </div>
                 </div>
-                <div className={style.search}>
-                    <img src={image3} className={style.icon}></img>
+                <div className={styles.search}>
+                    <img src={image3} className={styles.icon}></img>
                     <input
-                        className={style.searchInput}
+                        className={styles.searchInput}
                         type="text"
                         placeholder="Поиск"
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) => onSearchChange(e.target.value)}
                     />
                 </div>
             </div>
-            <div className={style.logo}>Планировщик личных дел</div>
+            <div className={styles.logo}>Планировщик личных дел</div>
         </div>
     )
 }

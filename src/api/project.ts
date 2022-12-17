@@ -2,6 +2,7 @@ import { callApi, useQuery } from 'lib/api'
 import { array, Infer, number, object, string } from 'superstruct'
 
 export type Project = Infer<typeof Project>
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Project = object({
     id: number(),
     name: string(),

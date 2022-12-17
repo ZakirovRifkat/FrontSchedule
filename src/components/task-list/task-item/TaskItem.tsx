@@ -1,17 +1,16 @@
 import { deleteTask, Task, TASK_QUERY_KEY } from 'api/task'
 import { toHumanDate } from 'lib/time'
+import { toEditTaskUrl } from 'lib/url'
 import { useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router'
 import styles from './TaskItem.module.css'
 
 const TaskItem = ({ task }: { task: Task }) => {
-    const isPeriod = toHumanDate(task.start) !== toHumanDate(task.end)
     const navigate = useNavigate()
 
     const queryClient = useQueryClient()
     const handleDelete = async () => {
-        // eslint-disable-next-line no-restricted-globals
-        const sure = confirm('Вы уверены, что хотите удалить задачу?')
+        const sure = window.confirm('Вы уверены, что хотите удалить задачу?')
         if (!sure) {
             return
         }
@@ -24,6 +23,8 @@ const TaskItem = ({ task }: { task: Task }) => {
         }
     }
 
+    const isDateRange = toHumanDate(task.start) !== toHumanDate(task.end)
+
     return (
         <div className={styles.taskMargin}>
             <div className={styles.task}>
@@ -35,9 +36,7 @@ const TaskItem = ({ task }: { task: Task }) => {
                     <button
                         className={styles.button}
                         onClick={() =>
-                            navigate(
-                                `/project/${task.project.id}/task/${task.id}/edit`
-                            )
+                            navigate(toEditTaskUrl(task.project.id, task.id))
                         }
                     >
                         Изменить
@@ -65,7 +64,7 @@ const TaskItem = ({ task }: { task: Task }) => {
                     : `Похер абсолютно`}
             </div>
             <div className={styles.date}>
-                {isPeriod
+                {isDateRange
                     ? `${toHumanDate(task.start)} - ${toHumanDate(task.end)}`
                     : toHumanDate(task.start)}
             </div>
