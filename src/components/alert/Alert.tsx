@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import styles from './Alert.module.css'
+import { Button } from 'components/button/Button'
 
 const Alert = ({
     onButtonClick,
@@ -13,9 +14,7 @@ const Alert = ({
     <div className={styles.container}>
         <p className={styles.text}>{text}</p>
         {buttonText ? (
-            <button className={styles.retry} onClick={onButtonClick}>
-                {buttonText}
-            </button>
+            <Button onClick={onButtonClick}>{buttonText}</Button>
         ) : null}
     </div>
 )

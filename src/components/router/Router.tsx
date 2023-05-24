@@ -7,7 +7,7 @@ import TaskList from '../task-list/TaskList'
 import Menu from '../menu/Menu'
 import styles from './Router.module.css'
 import Header from 'components/header/Header'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import {
     toDefaultPageUrl,
     toEditProjectUrl,
@@ -18,8 +18,53 @@ import {
     toProjectPageUrl,
 } from 'lib/url'
 import TaskPage from 'components/task-page/TaskPage'
+import { User, useUser } from 'api/auth'
+import { Button } from 'components/button/Button'
+import { getGoogleOauthRedirectPath } from 'lib/google'
 
-const Router = () => {
+export const Auth = () => {
+    const { isLoading, error, refetch: refetchUser, data: user } = useUser()
+
+    if (isLoading) {
+        return (
+            <div className={styles.mainContainer}>
+                <Spinner />
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className={styles.mainContainer}>
+                <ErrorMessage
+                    text="Не удалось загрузить данные пользователя"
+                    retry={refetchUser}
+                />
+            </div>
+        )
+    }
+
+    if (!user) {
+        return (
+            <div className={styles.mainContainer}>
+                Войдите с помощью Google, чтобы пользоваться списком дел
+                <br />
+                <br />
+                <Button
+                    onClick={() =>
+                        (window.location.href = getGoogleOauthRedirectPath())
+                    }
+                >
+                    Войти
+                </Button>
+            </div>
+        )
+    }
+
+    return <Router user={user} />
+}
+
+const Router: FC<{ user: User }> = () => {
     const [search, setSearch] = useState('')
     const [isMenuOpen, setIsMenuOpen] = useState(true)
     const toggleMenu = () => setIsMenuOpen((open) => !open)
@@ -97,4 +142,3 @@ const Router = () => {
         </div>
     )
 }
-export default Router

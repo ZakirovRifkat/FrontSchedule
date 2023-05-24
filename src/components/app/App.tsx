@@ -1,4 +1,4 @@
-import Router from '../router/Router'
+import { Auth } from '../router/Router'
 import { useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -19,7 +19,7 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                <Router />
+                <Auth />
             </BrowserRouter>
         </QueryClientProvider>
     )

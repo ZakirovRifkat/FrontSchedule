@@ -1,6 +1,7 @@
 import { Project } from 'api/project'
 import { TASK_QUERY_KEY } from 'api/task'
 import { callApi, formatPath } from 'lib/api'
+import { getGoogleOauthRedirectPath } from 'lib/google'
 import { useQueryClient } from 'react-query'
 import { boolean, object } from 'superstruct'
 
@@ -16,18 +17,7 @@ export const useGoogleIntegration = (project: Project | undefined) => {
             })
 
             if (!authorized) {
-                window.location.href = formatPath({
-                    path: 'https://accounts.google.com/o/oauth2/v2/auth',
-                    query: {
-                        scope: 'https://www.googleapis.com/auth/calendar.events',
-                        access_type: 'offline',
-                        include_granted_scopes: true,
-                        response_type: 'code',
-                        redirect_uri: formatPath({ path: '/google/callback' }),
-                        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-                        state: window.location.href,
-                    },
-                })
+                window.location.href = getGoogleOauthRedirectPath()
                 return false
             }
             return true
