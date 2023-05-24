@@ -1,6 +1,6 @@
 import { Project } from 'api/project'
 import { TASK_QUERY_KEY } from 'api/task'
-import { callApi, formatPath } from 'lib/api'
+import { callApi } from 'lib/api'
 import { getGoogleOauthRedirectPath } from 'lib/google'
 import { useQueryClient } from 'react-query'
 import { boolean, object } from 'superstruct'
