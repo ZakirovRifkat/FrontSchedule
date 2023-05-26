@@ -22,13 +22,18 @@ const filterTitles: Record<Filter, string> = {
     [Filter.oncoming]: 'Предстоящие',
     [Filter.overdue]: 'Просроченные',
 }
-const TaskList = ({ search }: { search: string }) => {
+const TaskList = ({ userId, search }: { userId: number; search: string }) => {
     const [listType] = useListType()
     const navigate = useNavigate()
     const queryClient = useQueryClient()
 
-    const { data: projects } = useProjects()
-    const { isFetching, error, refetch, data: rawTasks } = useTasks(listType)
+    const { data: projects } = useProjects(userId)
+    const {
+        isFetching,
+        error,
+        refetch,
+        data: rawTasks,
+    } = useTasks(userId, listType)
     const filteredTasks = useMemo(
         () => rawTasks?.filter((task) => task.name.includes(search.trim())),
         [rawTasks, search]
@@ -80,7 +85,7 @@ const TaskList = ({ search }: { search: string }) => {
             return
         }
         try {
-            await deleteProject(project.id)
+            await deleteProject(userId, project.id)
             queryClient.invalidateQueries(PROJECTS_QUERY_KEY)
         } catch (e) {
             console.error(e)

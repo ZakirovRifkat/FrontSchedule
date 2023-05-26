@@ -16,6 +16,10 @@
     margin-right: 40px;
     cursor: default;
     text-transform: uppercase;
+    margin-left: auto;
+}
+.logout {
+    filter: invert(1);
 }
 .button {
     outline: none;

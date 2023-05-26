@@ -11,3 +11,14 @@
     justify-content: center;
     width: 100%;
 }
+
+.auth {
+    padding-top: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.authButton {
+    margin-top: 30px;
+}

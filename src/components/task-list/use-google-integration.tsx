@@ -1,40 +1,14 @@
 import { Project } from 'api/project'
 import { TASK_QUERY_KEY } from 'api/task'
 import { callApi } from 'lib/api'
-import { getGoogleOauthRedirectPath } from 'lib/google'
 import { useQueryClient } from 'react-query'
-import { boolean, object } from 'superstruct'
 
 export const useGoogleIntegration = (project: Project | undefined) => {
     const queryClient = useQueryClient()
 
-    const authorizeGoogle = async () => {
-        try {
-            const { authorized } = await callApi({
-                path: '/google/is-authorized',
-                method: 'GET',
-                parser: object({ authorized: boolean() }),
-            })
-
-            if (!authorized) {
-                window.location.href = getGoogleOauthRedirectPath()
-                return false
-            }
-            return true
-        } catch (e) {
-            console.error(e)
-            return false
-        }
-    }
-
     const handleUploadToGoogle = async () => {
         if (!project) {
             return
-        }
-
-        const authorized = await authorizeGoogle()
-        if (!authorized) {
-            return null
         }
 
         try {
@@ -53,11 +27,6 @@ export const useGoogleIntegration = (project: Project | undefined) => {
     const handleDownloadFromGoogle = async () => {
         if (!project) {
             return
-        }
-
-        const authorized = await authorizeGoogle()
-        if (!authorized) {
-            return null
         }
 
         try {

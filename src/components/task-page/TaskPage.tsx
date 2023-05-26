@@ -14,10 +14,10 @@ import { toDefaultPageUrl, toTasksListUrl } from 'lib/url'
 import { useQueryClient } from 'react-query'
 import { Project, useProjects } from 'api/project'
 
-const TaskPage = () => {
+const TaskPage = ({ userId }: { userId: number }) => {
     const [listType] = useListType()
 
-    const { data: projects } = useProjects()
+    const { data: projects } = useProjects(userId)
     const { projectId } = useParams()
     const project = useMemo(
         () => projects?.find((p) => String(p.id) === projectId),
@@ -27,7 +27,7 @@ const TaskPage = () => {
     const { taskId } = useParams()
     const isUpdating = taskId !== undefined
 
-    const { data: tasks } = useTasks(isUpdating ? listType : null)
+    const { data: tasks } = useTasks(userId, isUpdating ? listType : null)
     const task = useMemo(
         () => tasks?.find((t) => String(t.id) === taskId),
         [taskId, tasks]

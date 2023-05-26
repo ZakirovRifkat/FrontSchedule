@@ -18,7 +18,7 @@ import {
     toProjectPageUrl,
 } from 'lib/url'
 import TaskPage from 'components/task-page/TaskPage'
-import { User, useUser } from 'api/auth'
+import { useUser } from 'api/auth'
 import { Button } from 'components/button/Button'
 import { getGoogleOauthRedirectPath } from 'lib/google'
 
@@ -44,27 +44,29 @@ export const Auth = () => {
         )
     }
 
-    if (!user) {
+    if (!user || !user.userId) {
         return (
             <div className={styles.mainContainer}>
-                Войдите с помощью Google, чтобы пользоваться списком дел
-                <br />
-                <br />
-                <Button
-                    onClick={() =>
-                        (window.location.href = getGoogleOauthRedirectPath())
-                    }
-                >
-                    Войти
-                </Button>
+                <div className={styles.auth}>
+                    Войдите с помощью Google, чтобы пользоваться списком дел
+                    <Button
+                        className={styles.authButton}
+                        onClick={() =>
+                            (window.location.href =
+                                getGoogleOauthRedirectPath())
+                        }
+                    >
+                        Войти
+                    </Button>
+                </div>
             </div>
         )
     }
 
-    return <Router user={user} />
+    return <Router userId={user.userId} />
 }
 
-const Router: FC<{ user: User }> = () => {
+const Router: FC<{ userId: number }> = ({ userId }) => {
     const [search, setSearch] = useState('')
     const [isMenuOpen, setIsMenuOpen] = useState(true)
     const toggleMenu = () => setIsMenuOpen((open) => !open)
@@ -74,7 +76,7 @@ const Router: FC<{ user: User }> = () => {
         error,
         refetch: refetchProjects,
         data: projects,
-    } = useProjects()
+    } = useProjects(userId)
 
     if (isLoading) {
         return (
@@ -109,26 +111,29 @@ const Router: FC<{ user: User }> = () => {
                     {/* Проекты */}
                     <Route
                         path={toProjectPageUrl(':projectId')}
-                        element={<TaskList search={search} />}
+                        element={<TaskList userId={userId} search={search} />}
                     />
                     <Route
                         path={toGroupPageUrl(':projectId')}
-                        element={<TaskList search={search} />}
+                        element={<TaskList userId={userId} search={search} />}
                     />
                     <Route
                         path={toEditProjectUrl(':projectId')}
-                        element={<ProjectPage />}
+                        element={<ProjectPage userId={userId} />}
                     />
-                    <Route path={toNewProjectUrl()} element={<ProjectPage />} />
+                    <Route
+                        path={toNewProjectUrl()}
+                        element={<ProjectPage userId={userId} />}
+                    />
 
                     {/* Задачи */}
                     <Route
                         path={toNewTaskUrl(':projectId')}
-                        element={<TaskPage />}
+                        element={<TaskPage userId={userId} />}
                     />
                     <Route
                         path={toEditTaskUrl(':projectId', ':taskId')}
-                        element={<TaskPage />}
+                        element={<TaskPage userId={userId} />}
                     />
 
                     <Route

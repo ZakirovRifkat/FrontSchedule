@@ -11,31 +11,50 @@ export const Project = object({
 export const ProjectArray = array(Project)
 
 export const PROJECTS_QUERY_KEY = 'projects'
-export const useProjects = ({ enabled }: { enabled?: boolean } = {}) =>
+export const useProjects = (
+    userId: number,
+    {
+        enabled,
+    }: {
+        enabled?: boolean
+    } = {}
+) =>
     useQuery(
         PROJECTS_QUERY_KEY,
         {
             path: '/projects/all',
+            query: { userId },
             parser: ProjectArray,
         },
         { enabled }
     )
 
-export const createProject = ({ name }: { name: string }) =>
+export const createProject = (
+    userId: number,
+    {
+        name,
+    }: {
+        name: string
+    }
+) =>
     callApi({
         path: '/projects/add',
         method: 'POST',
-        query: { name },
+        query: { name, userId },
         parser: Project,
     })
-export const updateProject = (projectId: number, { name }: { name: string }) =>
+export const updateProject = (
+    userId: number,
+    projectId: number,
+    { name }: { name: string }
+) =>
     callApi({
         path: '/projects/update',
         method: 'PUT',
         query: { id: projectId, name },
         parser: Project,
     })
-export const deleteProject = (projectId: number) =>
+export const deleteProject = (userId: number, projectId: number) =>
     callApi({
         path: '/projects/delete',
         method: 'DELETE',

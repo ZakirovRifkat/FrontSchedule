@@ -1,9 +1,12 @@
 import styles from './Header.module.css'
-import image1 from '../../assets/menu.png'
-import image2 from '../../assets/home.png'
-import image3 from '../../assets/search.png'
+import menuIcon from '../../assets/menu.png'
+import homeIcon from '../../assets/home.png'
+import searchIcon from '../../assets/search.png'
+import logoutIcon from '../../assets/logout.png'
 import { useNavigate } from 'react-router'
 import { toDefaultPageUrl } from 'lib/url'
+import { callApi } from 'lib/api'
+import { logout } from 'api/auth'
 
 const Header = ({
     toggleMenu,
@@ -21,20 +24,20 @@ const Header = ({
             <div className={styles.headerIcons}>
                 <div>
                     <div onClick={toggleMenu} className={styles.button}>
-                        <img src={image1} className={styles.icon}></img>
+                        <img src={menuIcon} className={styles.icon}></img>
                     </div>
                 </div>
                 <div>
                     <div className={styles.home}>
                         <img
-                            src={image2}
+                            src={homeIcon}
                             className={styles.icon}
                             onClick={() => navigate(toDefaultPageUrl())}
                         />
                     </div>
                 </div>
                 <div className={styles.search}>
-                    <img src={image3} className={styles.icon}></img>
+                    <img src={searchIcon} className={styles.icon}></img>
                     <input
                         className={styles.searchInput}
                         type="text"
@@ -45,6 +48,17 @@ const Header = ({
                 </div>
             </div>
             <div className={styles.logo}>Планировщик личных дел</div>
+            <div className={styles.logout}>
+                <div className={styles.button}>
+                    <img
+                        src={logoutIcon}
+                        className={styles.icon}
+                        onClick={() =>
+                            logout().then(() => window.location.reload())
+                        }
+                    />
+                </div>
+            </div>
         </div>
     )
 }

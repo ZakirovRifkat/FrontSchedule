@@ -25,17 +25,18 @@ const filteredPaths: Record<Filter, string> = {
     [Filter.overdue]: '/tasks/notdone',
 }
 export const TASK_QUERY_KEY = 'tasks'
-export const useTasks = (listType: Filter | number | null) =>
+export const useTasks = (userId: number, listType: Filter | number | null) =>
     useQuery(
         [TASK_QUERY_KEY, listType],
         typeof listType === 'number'
             ? {
                   path: '/tasks/all',
-                  query: { id: listType },
+                  query: { userId, projectId: listType },
                   parser: TaskArray,
               }
             : {
                   path: filteredPaths[listType ?? Filter.today],
+                  query: { userId },
                   parser: TaskArray,
               },
         { enabled: listType !== null }

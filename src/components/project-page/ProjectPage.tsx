@@ -10,14 +10,14 @@ import { useQueryClient } from 'react-query'
 import { Navigate, useNavigate, useParams } from 'react-router'
 import styles from './ProjectPage.module.css'
 
-const ProjectPage = () => {
+const ProjectPage = ({ userId }: { userId: number }) => {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
 
     const { projectId } = useParams()
     const isUpdating = projectId !== undefined
 
-    const { data: projects } = useProjects({ enabled: isUpdating })
+    const { data: projects } = useProjects(userId, { enabled: isUpdating })
     const project = useMemo(
         () => projects?.find((p) => String(p.id) === projectId),
         [projectId, projects]
@@ -50,8 +50,8 @@ const ProjectPage = () => {
             setError(null)
 
             const updatedProject = await (project
-                ? updateProject(project.id, { name })
-                : createProject({ name }))
+                ? updateProject(userId, project.id, { name })
+                : createProject(userId, { name }))
 
             await queryClient.invalidateQueries(PROJECTS_QUERY_KEY)
             navigate(toTasksListUrl(updatedProject.id), { replace: true })
